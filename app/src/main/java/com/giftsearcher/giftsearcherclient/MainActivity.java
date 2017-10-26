@@ -9,14 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ArrayAdapter<Gift> adapter;
     private ListView giftsListView;
+    private Spinner spinnerGiftsSort;
 
     private final String URL_SERVER = "http://192.168.0.103:8080";
     private final String URL_BEST_RATING_GIFTS = URL_SERVER + "/api/gifts/";
@@ -42,11 +46,39 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
         giftsListView = (ListView) findViewById(R.id.giftsListView);
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         giftsListView.setAdapter(adapter);
-        new JSONTask().execute(currentUrl);
 
+        spinnerGiftsSort = (Spinner) findViewById(R.id.spinnerGiftsSort);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item);
+        final String[] spinnerItems = { "Наилучший рейтинг", "Хиты продаж", "Новинки", "Цена по возрастанию", "Цена по убыванию" };
+        spinnerAdapter.addAll(spinnerItems);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerGiftsSort.setAdapter(spinnerAdapter);
+        spinnerGiftsSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        new JSONTask().execute(URL_BEST_RATING_GIFTS);
+                        break;
+                    case 1: new JSONTask().execute(URL_POPULAR_GIFTS);
+                        break;
+                    case 2: new JSONTask().execute(URL_NEW_GIFTS);
+                        break;
+                    case 3: new JSONTask().execute(URL_CHEAP_GIFTS);
+                        break;
+                    case 4: new JSONTask().execute(URL_EXPENSIVE_GIFTS);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     @Override
@@ -86,7 +118,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
+            adapter.clear();
             adapter.addAll(result);
+            adapter.notifyDataSetChanged();
         }
     }
 }

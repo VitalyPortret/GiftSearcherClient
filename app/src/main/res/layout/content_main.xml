@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_main">
 
     <Spinner
-        android:id="@+id/dropDownGiftList"
+        android:id="@+id/spinnerGiftsSort"
         android:layout_width="227dp"
         android:layout_height="36dp"
         app:layout_constraintLeft_toLeftOf="parent"
