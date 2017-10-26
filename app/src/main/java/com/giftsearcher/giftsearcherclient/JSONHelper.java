@@ -1,17 +1,17 @@
 package com.giftsearcher.giftsearcherclient;
 
-import android.util.Log;
-
 import com.alibaba.fastjson.JSON;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import java.util.List;
+import android.util.Log;
 
 public class JSONHelper {
 
@@ -41,11 +41,9 @@ public class JSONHelper {
                 stringBuilder.append(line);
             }
             return JSON.parseArray(stringBuilder.toString(), Gift.class);
-
         } catch (IOException e) {
             Log.e("ERROR", e.getMessage(), e);
-        }
-        finally {
+        } finally {
             if (connection != null) {
                 connection.disconnect();
             }
@@ -61,17 +59,5 @@ public class JSONHelper {
             }
         }
         return null;
-    }
-
-    public static String getJsonFromApiUsingSpringLibrary(String stringUsl){
-        try {
-                RestTemplate restTemplate = new RestTemplate();
-                String result = restTemplate.getForObject(stringUsl, String.class);
-                return result;
-            } catch (Exception e) {
-                Log.e("ERROR", e.getMessage(), e);
-            }
-
-            return null;
     }
 }
