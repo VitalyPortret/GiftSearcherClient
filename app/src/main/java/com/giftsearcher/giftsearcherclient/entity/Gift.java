@@ -1,4 +1,4 @@
-package com.giftsearcher.giftsearcherclient;
+package com.giftsearcher.giftsearcherclient.entity;
 
 
 import java.util.Date;

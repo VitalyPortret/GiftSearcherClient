@@ -1,6 +1,7 @@
 package com.giftsearcher.giftsearcherclient;
 
 import com.alibaba.fastjson.JSON;
+import com.giftsearcher.giftsearcherclient.entity.Gift;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,5 +1,6 @@
 package com.giftsearcher.giftsearcherclient;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+
+import com.giftsearcher.giftsearcherclient.entity.Gift;
 
 import java.util.List;
 
@@ -28,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private final String URL_NEW_GIFTS = URL_SERVER + "/api/gifts/new";
     private final String URL_CHEAP_GIFTS = URL_SERVER + "/api/gifts/cheap";
     private final String URL_EXPENSIVE_GIFTS = URL_SERVER + "/api/gifts/expensive";
-
-    private String currentUrl = URL_BEST_RATING_GIFTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +51,24 @@ public class MainActivity extends AppCompatActivity {
         giftsListView = (ListView) findViewById(R.id.giftsListView);
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         giftsListView.setAdapter(adapter);
+        giftsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
 
         spinnerGiftsSort = (Spinner) findViewById(R.id.spinnerGiftsSort);
+        setSpinnerAdapter(spinnerGiftsSort);
+    }
+
+    private void setSpinnerAdapter(Spinner spinner) {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item);
         final String[] spinnerItems = { "Наилучший рейтинг", "Хиты продаж", "Новинки", "Цена по возрастанию", "Цена по убыванию" };
         spinnerAdapter.addAll(spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinnerGiftsSort.setAdapter(spinnerAdapter);
-        spinnerGiftsSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
