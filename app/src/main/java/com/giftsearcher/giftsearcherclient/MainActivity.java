@@ -1,6 +1,5 @@
 package com.giftsearcher.giftsearcherclient;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
+import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.util.List;
 
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected List<Gift> doInBackground(String... params) {
-            return JSONHelper.getJsonFromRemoteApi(params[0]);
+            return JSONUtil.getJsonFromRemoteApi(params[0]);
         }
 
         @Override

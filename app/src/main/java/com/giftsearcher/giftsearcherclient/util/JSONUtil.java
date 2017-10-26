@@ -1,4 +1,4 @@
-package com.giftsearcher.giftsearcherclient;
+package com.giftsearcher.giftsearcherclient.util;
 
 import com.alibaba.fastjson.JSON;
 import com.giftsearcher.giftsearcherclient.entity.Gift;
@@ -14,13 +14,13 @@ import java.net.URL;
 import java.util.List;
 import android.util.Log;
 
-public class JSONHelper {
+public class JSONUtil {
 
     public static List<Gift> getJsonFromRemoteApi(String stringUrl) {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader reader = null;
-        URL url = null;
+        URL url;
 
         try {
             url = new URL(stringUrl);
