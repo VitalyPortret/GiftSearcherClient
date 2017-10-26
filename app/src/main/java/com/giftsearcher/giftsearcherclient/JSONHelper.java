@@ -18,6 +18,11 @@ public class JSONHelper {
         try {
             url = new URL(stringUrl);
             connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            connection.setDoInput(true);
             connection.connect();
 
             inputStream  = connection.getInputStream();
