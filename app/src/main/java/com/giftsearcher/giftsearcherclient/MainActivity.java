@@ -11,16 +11,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
 import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity {
 
     private ArrayAdapter<Gift> adapter;
     private ListView giftsListView;
-    private final String URL_CHEAP_GIFTS = "http://192.168.0.103:8080/api/gifts/cheap";
+
+    private final String URL_SERVER = "http://192.168.0.103:8080";
+    private final String URL_BEST_RATING_GIFTS = URL_SERVER + "/api/gifts/";
+    private final String URL_POPULAR_GIFTS = URL_SERVER + "/api/gifts/popular";
+    private final String URL_NEW_GIFTS = URL_SERVER + "/api/gifts/new";
+    private final String URL_CHEAP_GIFTS = URL_SERVER + "/api/gifts/cheap";
+    private final String URL_EXPENSIVE_GIFTS = URL_SERVER + "/api/gifts/expensive";
+
+    private String currentUrl = URL_BEST_RATING_GIFTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         giftsListView = (ListView) findViewById(R.id.giftsListView);
-        adapter = new ArrayAdapter<Gift>(this,android.R.layout.simple_list_item_1);
-        new JSONTask().execute(URL_CHEAP_GIFTS);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
+        giftsListView.setAdapter(adapter);
+        new JSONTask().execute(currentUrl);
 
     }
 
