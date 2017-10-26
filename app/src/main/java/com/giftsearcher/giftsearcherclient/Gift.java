@@ -75,4 +75,16 @@ public class Gift {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    @Override
+    public String toString() {
+        return "Gift{" +
+                "nameGift='" + nameGift + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                ", price=" + price +
+                ", appreciated=" + appreciated +
+                ", dateAdding=" + dateAdding +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
 }

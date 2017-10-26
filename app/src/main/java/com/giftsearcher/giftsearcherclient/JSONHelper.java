@@ -2,6 +2,7 @@ package com.giftsearcher.giftsearcherclient;
 
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -10,10 +11,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class JSONHelper {
 
-    public static String getJsonFromRemoteApi(String stringUrl) {
+    public static List<Gift> getJsonFromRemoteApi(String stringUrl) {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader reader = null;
@@ -38,7 +40,7 @@ public class JSONHelper {
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
             }
-            return stringBuilder.toString();
+            return JSON.parseArray(stringBuilder.toString(), Gift.class);
 
         } catch (IOException e) {
             Log.e("ERROR", e.getMessage(), e);

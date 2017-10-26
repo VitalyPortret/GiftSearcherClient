@@ -6,30 +6,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvResult;
-    private Button button;
-    private static final String TAG = "MyActivity";
+    private ArrayAdapter<Gift> adapter;
+    private ListView giftsListView;
+    private final String URL_CHEAP_GIFTS = "http://192.168.0.103:8080/api/gifts/cheap";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        tvResult = (TextView) findViewById(R.id.tvResult);
-        new JSONTask().execute("http://192.168.0.103:8080/api/gifts/cheap");
+        giftsListView = (ListView) findViewById(R.id.giftsListView);
+        adapter = new ArrayAdapter<Gift>(this,android.R.layout.simple_list_item_1);
+        new JSONTask().execute(URL_CHEAP_GIFTS);
 
     }
 
@@ -73,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class JSONTask extends AsyncTask<String, Void, String> {
+    private class JSONTask extends AsyncTask<String, Void, List<Gift>> {
 
         @Override
         protected void onPreExecute() {
@@ -81,14 +73,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected List<Gift> doInBackground(String... params) {
             return JSONHelper.getJsonFromRemoteApi(params[0]);
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
-            tvResult.setText(result);
+            adapter.addAll(result);
         }
     }
 }
