@@ -47,15 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tvResult = (TextView) findViewById(R.id.tvResult);
-        button = (Button) findViewById(R.id.button);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new JSONTask().execute("http://localhost:8080/api/gifts/expensive");
-            }
-        });
-
+        new JSONTask().execute("http://192.168.0.103:8080/api/gifts/cheap");
 
     }
 
@@ -90,17 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            try {
-                final String url = "http://192.168.0.103:8080/api/gifts/expensive";
-
-                RestTemplate restTemplate = new RestTemplate();
-                String result = restTemplate.getForObject(url, String.class, "Android");
-                return result;
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
-            }
-
-            return null;
+            return JSONHelper.getJsonFromRemoteApi(params[0]);
         }
 
         @Override

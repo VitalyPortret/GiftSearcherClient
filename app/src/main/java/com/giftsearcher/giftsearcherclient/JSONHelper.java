@@ -1,5 +1,9 @@
 package com.giftsearcher.giftsearcherclient;
 
+import android.util.Log;
+
+import org.springframework.web.client.RestTemplate;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +26,7 @@ public class JSONHelper {
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            connection.setRequestProperty("Accept-Encoding", "identity");
             connection.setDoInput(true);
             connection.connect();
 
@@ -36,13 +41,12 @@ public class JSONHelper {
             return stringBuilder.toString();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("ERROR", e.getMessage(), e);
         }
         finally {
             if (connection != null) {
                 connection.disconnect();
             }
-
             try {
                 if (inputStream != null) {
                     inputStream.close();
@@ -57,4 +61,15 @@ public class JSONHelper {
         return null;
     }
 
+    public static String getJsonFromApiUsingSpringLibrary(String stringUsl){
+        try {
+                RestTemplate restTemplate = new RestTemplate();
+                String result = restTemplate.getForObject(stringUsl, String.class);
+                return result;
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+            }
+
+            return null;
+    }
 }
