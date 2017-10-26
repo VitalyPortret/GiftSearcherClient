@@ -91,13 +91,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                final String url = "http://localhost:8080/api/gifts/expensive";
+                final String url = "http://192.168.0.103:8080/api/gifts/expensive";
+
                 RestTemplate restTemplate = new RestTemplate();
-
-// Add the String message converter
-                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-
-// Make the HTTP GET request, marshaling the response to a String
                 String result = restTemplate.getForObject(url, String.class, "Android");
                 return result;
             } catch (Exception e) {
