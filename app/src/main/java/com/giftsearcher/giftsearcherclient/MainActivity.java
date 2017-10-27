@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         @Override
         protected List<Gift> doInBackground(String... params) {
-            return JSONUtil.getJsonFromRemoteApi(params[0]);
+            return JSONUtil.getGiftListFromJSON(params[0]);
         }
 
         @Override
