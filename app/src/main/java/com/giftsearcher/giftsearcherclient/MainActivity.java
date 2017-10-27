@@ -112,8 +112,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, GiftDetailActivity.class);
+        Gift gift = adapter.getItem(position);
+        if (gift == null) {
+            return;
+        }
 
+        Intent intent = new Intent(this, GiftDetailActivity.class);
+        intent.putExtra("id", gift.getId());
+        startActivity(intent);
     }
 
     private class JSONTask extends AsyncTask<String, Void, List<Gift>> {

@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class Gift {
 
+    private long id;
+
     private String nameGift;
 
     private String imagePath;
@@ -19,6 +21,14 @@ public class Gift {
     private Date dateAdding;
 
     private String gender;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getNameGift() {
         return nameGift;
