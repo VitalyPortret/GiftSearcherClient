@@ -1,8 +1,6 @@
 package com.giftsearcher.giftsearcherclient.entity;
 
-
 import java.util.Date;
-
 
 public class Gift {
 
@@ -13,6 +11,8 @@ public class Gift {
     private String imagePath;
 
     private String description;
+
+    private byte[] image;
 
     private double price;
 
@@ -52,6 +52,14 @@ public class Gift {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public double getPrice() {

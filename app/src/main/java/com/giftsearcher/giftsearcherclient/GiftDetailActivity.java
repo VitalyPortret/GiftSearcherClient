@@ -1,12 +1,13 @@
 package com.giftsearcher.giftsearcherclient;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,7 +48,17 @@ public class GiftDetailActivity extends AppCompatActivity {
 
         String url_detail_gift = URL_SERVER + "/api/gifts/gift/" + idGift;
         new JSONTask().execute(url_detail_gift);
+    }
 
+    private void setGiftDetailField(Gift gift) {
+        tvGiftName.setText(gift.getNameGift());
+        tvGiftPrice.setText(String.format("%s", gift.getPrice()));
+        tvGiftDescription.setText(gift.getDescription());
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+        Bitmap bmp = BitmapFactory.decodeByteArray(gift.getImage(), 0, gift.getImage().length, options);
+        imageGiftDetail.setImageBitmap(bmp);
     }
 
     private class JSONTask extends AsyncTask<String, Void, Gift> {
@@ -66,9 +77,7 @@ public class GiftDetailActivity extends AppCompatActivity {
         protected void onPostExecute(Gift gift) {
             super.onPostExecute(gift);
 
-            tvGiftName.setText(gift.getNameGift());
-            tvGiftPrice.setText(String.format("%s", gift.getPrice()));
-            tvGiftDescription.setText(gift.getDescription());
+            setGiftDetailField(gift);
         }
     }
 }
