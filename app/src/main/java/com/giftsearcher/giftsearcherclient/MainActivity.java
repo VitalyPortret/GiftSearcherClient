@@ -1,19 +1,28 @@
 package com.giftsearcher.giftsearcherclient;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
@@ -142,4 +151,52 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             adapter.notifyDataSetChanged();
         }
     }
+
+    private class GiftListAdapter extends ArrayAdapter {
+
+        private List<Gift> giftList;
+        private int resource;
+        private LayoutInflater inflater;
+
+        public GiftListAdapter(Context context, int resource, List<Gift> giftList) {
+            super(context, resource, giftList);
+            this.giftList = giftList;
+            this.resource = resource;
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.gift_list_item, null);
+            }
+
+            ImageView ivGiftList;
+            TextView tvGiftName, tvGiftPrice, tvGiftAppreciated;
+
+            ivGiftList = (ImageView) convertView.findViewById(R.id.ivGiftList);
+            tvGiftName = (TextView) convertView.findViewById(R.id.tvGiftName);
+            tvGiftPrice = (TextView) convertView.findViewById(R.id.tvGiftPrice);
+            tvGiftAppreciated = (TextView) convertView.findViewById(R.id.tvGiftAppreciated);
+
+            Gift gift = giftList.get(position);
+            tvGiftName.setText(gift.getNameGift());
+            tvGiftPrice.setText(String.format("%s", gift.getPrice()));
+            tvGiftAppreciated.setText(gift.getAppreciated());
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            Bitmap bmp = BitmapFactory.decodeByteArray(gift.getImage(), 0, gift.getImage().length, options);
+            ivGiftList.setImageBitmap(bmp);
+
+
+            return convertView;
+        }
+    }
+
 }
+
+
+

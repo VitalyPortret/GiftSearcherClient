@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivGiftList"
         android:layout_width="wrap_content"
         android:layout_height="109dp"
         android:layout_weight="0.36"
@@ -19,12 +19,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tvGiftName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvGiftPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvGiftAppreciated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
