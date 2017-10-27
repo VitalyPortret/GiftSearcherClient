@@ -1,5 +1,6 @@
 package com.giftsearcher.giftsearcherclient;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,14 +20,14 @@ import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ArrayAdapter<Gift> adapter;
     private ListView giftsListView;
     private Spinner spinnerGiftsSort;
 
     private final String URL_SERVER = "http://192.168.0.103:8080";
-    private final String URL_BEST_RATING_GIFTS = URL_SERVER + "/api/gifts/";
+    private final String URL_BEST_RATING_GIFTS = URL_SERVER + "/api/gifts";
     private final String URL_POPULAR_GIFTS = URL_SERVER + "/api/gifts/popular";
     private final String URL_NEW_GIFTS = URL_SERVER + "/api/gifts/new";
     private final String URL_CHEAP_GIFTS = URL_SERVER + "/api/gifts/cheap";
@@ -51,11 +52,7 @@ public class MainActivity extends AppCompatActivity {
         giftsListView = (ListView) findViewById(R.id.giftsListView);
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         giftsListView.setAdapter(adapter);
-        giftsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-        });
+        giftsListView.setOnItemClickListener(this);
 
         spinnerGiftsSort = (Spinner) findViewById(R.id.spinnerGiftsSort);
         setSpinnerAdapter(spinnerGiftsSort);
@@ -111,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, GiftDetailActivity.class);
+
     }
 
     private class JSONTask extends AsyncTask<String, Void, List<Gift>> {
