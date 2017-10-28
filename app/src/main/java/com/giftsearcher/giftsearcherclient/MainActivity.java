@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
+import com.giftsearcher.giftsearcherclient.util.ImageUtil;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.util.List;
@@ -32,10 +33,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ArrayAdapter<Gift> adapter;
+    private GiftListAdapter giftsAdapter;
     private ListView giftsListView;
     private Spinner spinnerGiftsSort;
 
-    private final String URL_SERVER = "http://192.168.0.103:8080";
+//    private final String URL_SERVER = "http://192.168.0.103:8080";
+    private final String URL_SERVER = "http://192.168.0.234:8080";
     private final String URL_BEST_RATING_GIFTS = URL_SERVER + "/api/gifts";
     private final String URL_POPULAR_GIFTS = URL_SERVER + "/api/gifts/popular";
     private final String URL_NEW_GIFTS = URL_SERVER + "/api/gifts/new";
@@ -59,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         giftsListView = (ListView) findViewById(R.id.giftsListView);
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
-        giftsListView.setAdapter(adapter);
+//        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         giftsListView.setOnItemClickListener(this);
 
         spinnerGiftsSort = (Spinner) findViewById(R.id.spinnerGiftsSort);
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Gift gift = adapter.getItem(position);
+        Gift gift = giftsAdapter.getItem(position);
         if (gift == null) {
             return;
         }
@@ -146,13 +148,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
-            adapter.clear();
-            adapter.addAll(result);
-            adapter.notifyDataSetChanged();
+//            giftsAdapter.clear();
+            giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, result);
+
+
+            giftsAdapter.notifyDataSetChanged();
+            giftsListView.setAdapter(giftsAdapter);
         }
     }
 
-    private class GiftListAdapter extends ArrayAdapter {
+    private class GiftListAdapter extends ArrayAdapter<Gift> {
 
         private List<Gift> giftList;
         private int resource;
@@ -165,12 +170,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
+        @Override
+        public Gift getItem(int index) {
+            if( giftList == null || giftList.isEmpty() || index > giftList.size()){
+                return null;
+            }
+            return giftList.get(index);
+        }
+
+        @Override
+        public void clear() {
+            if (giftList != null && !giftList.isEmpty()){
+                giftList.clear();
+            }
+        }
 
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.gift_list_item, null);
+                convertView = inflater.inflate(resource, null);
             }
 
             ImageView ivGiftList;
@@ -184,13 +203,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Gift gift = giftList.get(position);
             tvGiftName.setText(gift.getNameGift());
             tvGiftPrice.setText(String.format("%s", gift.getPrice()));
-            tvGiftAppreciated.setText(gift.getAppreciated());
+            tvGiftAppreciated.setText(String.format("%s", gift.getAppreciated()));
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inMutable = true;
-            Bitmap bmp = BitmapFactory.decodeByteArray(gift.getImage(), 0, gift.getImage().length, options);
-            ivGiftList.setImageBitmap(bmp);
-
+            if (gift.getImage() != null) {
+                Bitmap bitmap = ImageUtil.createBitmapFromByteArray(gift.getImage());
+                ivGiftList.setImageBitmap(bitmap);
+            }
 
             return convertView;
         }
