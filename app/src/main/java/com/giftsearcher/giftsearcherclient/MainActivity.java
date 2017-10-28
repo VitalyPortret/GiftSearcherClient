@@ -28,11 +28,13 @@ import com.giftsearcher.giftsearcherclient.entity.Gift;
 import com.giftsearcher.giftsearcherclient.util.ImageUtil;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private ArrayAdapter<Gift> adapter;
+    private List<Gift> giftList;
+    //todo: Костыль удалить, как будет время
     private GiftListAdapter giftsAdapter;
     private ListView giftsListView;
     private Spinner spinnerGiftsSort;
@@ -62,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         giftsListView = (ListView) findViewById(R.id.giftsListView);
-//        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
+        giftList = new ArrayList<>();
+        giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, giftList);
+        giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
 
         spinnerGiftsSort = (Spinner) findViewById(R.id.spinnerGiftsSort);
@@ -148,12 +152,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
-//            giftsAdapter.clear();
-            giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, result);
 
+            giftList.clear();
+            giftList.addAll(result);
 
             giftsAdapter.notifyDataSetChanged();
-            giftsListView.setAdapter(giftsAdapter);
         }
     }
 
