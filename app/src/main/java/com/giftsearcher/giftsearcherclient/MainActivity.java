@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     case 4: new JSONTask().execute(URL_EXPENSIVE_GIFTS);
                         break;
                 }
-
             }
 
             @Override
