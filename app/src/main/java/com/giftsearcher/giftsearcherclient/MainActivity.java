@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 return JSONUtil.getGiftListFromJSON(params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
+                //todo: Добавить картинку что нет инета
             }
             return null;
         }
