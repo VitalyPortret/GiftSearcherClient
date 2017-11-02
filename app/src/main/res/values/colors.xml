@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorText">#434242</color>
     <color name="colorPrice">#202020</color>
+    <color name="colorBackgroudApp">#ffffff</color>
 </resources>
