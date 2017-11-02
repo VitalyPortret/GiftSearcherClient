@@ -25,9 +25,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
+import com.giftsearcher.giftsearcherclient.util.GlobalConstants;
 import com.giftsearcher.giftsearcherclient.util.ImageUtil;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ListView giftsListView;
     private Spinner spinnerGiftsSort;
 
-//    private final String URL_SERVER = "http://192.168.0.103:8080";
-    private final String URL_SERVER = "http://192.168.0.234:8080";
+    private final String URL_SERVER = GlobalConstants.URL_SERVER;
     private final String URL_BEST_RATING_GIFTS = URL_SERVER + "/api/gifts";
     private final String URL_POPULAR_GIFTS = URL_SERVER + "/api/gifts/popular";
     private final String URL_NEW_GIFTS = URL_SERVER + "/api/gifts/new";
@@ -64,8 +66,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         giftsListView = (ListView) findViewById(R.id.giftsListView);
+
         giftList = new ArrayList<>();
         giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, giftList);
+
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
 
@@ -73,8 +77,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSpinnerAdapter(spinnerGiftsSort);
     }
 
+    //Создание выподающего Спинера-ДропДаунЛиста(для выбора списка подарков)
     private void setSpinnerAdapter(Spinner spinner) {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item);
+
         final String[] spinnerItems = { "Наилучший рейтинг", "Хиты продаж", "Новинки", "Цена по возрастанию", "Цена по убыванию" };
         spinnerAdapter.addAll(spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -96,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     case 4: new JSONTask().execute(URL_EXPENSIVE_GIFTS);
                         break;
                 }
+
             }
 
             @Override
@@ -125,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
+    //Клик по любому из списка подарков
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Gift gift = giftsAdapter.getItem(position);
@@ -137,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivity(intent);
     }
 
+    //Обработка запросов в фоновом потоке
     private class JSONTask extends AsyncTask<String, Void, List<Gift>> {
 
         @Override
@@ -146,20 +155,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         @Override
         protected List<Gift> doInBackground(String... params) {
-            return JSONUtil.getGiftListFromJSON(params[0]);
+            try {
+                return JSONUtil.getGiftListFromJSON(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
+            if (result != null) {
+                giftList.clear();
+                giftList.addAll(result);
 
-            giftList.clear();
-            giftList.addAll(result);
-
-            giftsAdapter.notifyDataSetChanged();
+                giftsAdapter.notifyDataSetChanged();
+            }
         }
     }
 
+    //Адаптер для вывода СПИСКА ПОДАРКОВ!
     private class GiftListAdapter extends ArrayAdapter<Gift> {
 
         private List<Gift> giftList;

@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 import java.util.List;
@@ -16,7 +18,7 @@ import android.util.Log;
 
 public class JSONUtil {
 
-    public static List<Gift> getGiftListFromJSON(String stringUrl) {
+    public static List<Gift> getGiftListFromJSON(String stringUrl) throws IOException {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader reader = null;
@@ -42,8 +44,6 @@ public class JSONUtil {
                 stringBuilder.append(line);
             }
             return JSON.parseArray(stringBuilder.toString(), Gift.class);
-        } catch (IOException e) {
-            Log.e("ERROR", e.getMessage(), e);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -59,10 +59,9 @@ public class JSONUtil {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
-    public static Gift getGiftFromJSON(String stringUrl) {
+    public static Gift getGiftFromJSON(String stringUrl) throws IOException {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         BufferedReader reader = null;
@@ -88,8 +87,6 @@ public class JSONUtil {
                 stringBuilder.append(line);
             }
             return JSON.parseObject(stringBuilder.toString(), Gift.class);
-        } catch (IOException e) {
-            Log.e("ERROR", e.getMessage(), e);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -105,7 +102,6 @@ public class JSONUtil {
                 e.printStackTrace();
             }
         }
-        return null;
     }
 
 

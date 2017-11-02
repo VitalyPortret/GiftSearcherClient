@@ -12,11 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
+import com.giftsearcher.giftsearcherclient.util.GlobalConstants;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
+
+import java.io.IOException;
 
 public class GiftDetailActivity extends AppCompatActivity {
 
-    private final String URL_SERVER = "http://192.168.0.103:8080";
+    private final String URL_SERVER = GlobalConstants.URL_SERVER;;
     private TextView tvGiftName, tvGiftPrice, tvGiftDescription;
     private ImageView imageGiftDetail;
 
@@ -70,7 +73,12 @@ public class GiftDetailActivity extends AppCompatActivity {
 
         @Override
         protected Gift doInBackground(String... params) {
-            return JSONUtil.getGiftFromJSON(params[0]);
+            try {
+                return JSONUtil.getGiftFromJSON(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
