@@ -3,13 +3,10 @@ package com.giftsearcher.giftsearcherclient;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,12 +14,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
 import com.giftsearcher.giftsearcherclient.util.GlobalConstants;
@@ -30,14 +29,11 @@ import com.giftsearcher.giftsearcherclient.util.ImageUtil;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private List<Gift> giftList;
-    //todo: Костыль удалить, как будет время
     private GiftListAdapter giftsAdapter;
     private ListView giftsListView;
     private Spinner spinnerGiftsSort;
@@ -57,10 +53,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
 
         giftsListView = (ListView) findViewById(R.id.giftsListView);
-
-        giftList = new ArrayList<>();
-        giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, giftList);
-
+        giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, new ArrayList<Gift>());
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
 
@@ -153,8 +146,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
             if (result != null) {
-                giftList.clear();
-                giftList.addAll(result);
+                giftsAdapter.clear();
+                giftsAdapter.addAll(result);
 
                 giftsAdapter.notifyDataSetChanged();
             }
@@ -164,30 +157,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     //Адаптер для вывода СПИСКА ПОДАРКОВ!
     private class GiftListAdapter extends ArrayAdapter<Gift> {
 
-        private List<Gift> giftList;
+        private List<Gift> gifts;
         private int resource;
         private LayoutInflater inflater;
 
-        public GiftListAdapter(Context context, int resource, List<Gift> giftList) {
-            super(context, resource, giftList);
-            this.giftList = giftList;
+        public List<Gift> getGifts() {
+            return gifts;
+        }
+
+        public GiftListAdapter(Context context, int resource, List<Gift> gifts) {
+            super(context, resource, gifts);
+            this.gifts = gifts;
             this.resource = resource;
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public Gift getItem(int index) {
-            if( giftList == null || giftList.isEmpty() || index > giftList.size()){
-                return null;
-            }
-            return giftList.get(index);
-        }
-
-        @Override
-        public void clear() {
-            if (giftList != null && !giftList.isEmpty()){
-                giftList.clear();
-            }
         }
 
         @NonNull
@@ -200,12 +182,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ImageView ivGiftList;
             TextView tvGiftName, tvGiftPrice, tvGiftAppreciated;
 
-            ivGiftList = (ImageView) convertView.findViewById(R.id.ivGiftList);
-            tvGiftName = (TextView) convertView.findViewById(R.id.tvGiftName);
-            tvGiftPrice = (TextView) convertView.findViewById(R.id.tvGiftPrice);
-            tvGiftAppreciated = (TextView) convertView.findViewById(R.id.tvGiftAppreciated);
+            ivGiftList = convertView.findViewById(R.id.ivGiftList);
+            tvGiftName = convertView.findViewById(R.id.tvGiftName);
+            tvGiftPrice = convertView.findViewById(R.id.tvGiftPrice);
+            tvGiftAppreciated = convertView.findViewById(R.id.tvGiftAppreciated);
 
-            Gift gift = giftList.get(position);
+            Gift gift = gifts.get(position);
             tvGiftName.setText(gift.getNameGift());
             tvGiftPrice.setText(String.format("%s", gift.getPrice() + " ₽"));
             tvGiftAppreciated.setText(String.format("%s", gift.getAppreciated()));
