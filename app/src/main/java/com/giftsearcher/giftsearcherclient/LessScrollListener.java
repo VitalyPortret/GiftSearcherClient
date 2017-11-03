@@ -12,12 +12,12 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
     private int size = 10;
     private int page = 1;
 
-    public void setSize(int size) {
+    private void setSize(int size) {
         if (size >= 10 && size <= 100)
             this.size = size;
     }
 
-    public void setPage(int page) {
+    private void setPage(int page) {
         if (page >= 0)
             this.page = page;
     }
@@ -49,7 +49,7 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
                 listView.getHeaderViewsCount() -
                 listView.getFooterViewsCount()) >= (listAdapter.getCount() - 1)) {
 
-            if ((page + 1) <= Math.floor(totalItemsCount / 10) && !methodRuns) {
+            if ((page + 1) * size <= Math.floor(totalItemsCount / size) && !methodRuns) {
 
                 methodRuns = true;
                 if (listAdapter.getCount() >= 20) {
@@ -58,7 +58,7 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
                         listAdapter.remove(listAdapter.getItem(0));
                     }
                 }
-                methodRuns = onLoadMore(page,size);
+                methodRuns = onLoadMore(page, size);
                 page++;
             }
 
