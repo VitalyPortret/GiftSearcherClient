@@ -14,17 +14,15 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
-import com.giftsearcher.giftsearcherclient.util.GlobalConstants;
+import com.giftsearcher.giftsearcherclient.util.GlobalUrls;
 import com.giftsearcher.giftsearcherclient.util.ImageUtil;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
@@ -38,12 +36,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ListView giftsListView;
     private Spinner spinnerGiftsSort;
 
-    private final String URL_SERVER = GlobalConstants.URL_SERVER;
-    private final String URL_BEST_RATING_GIFTS = URL_SERVER + "/api/gifts";
-    private final String URL_POPULAR_GIFTS = URL_SERVER + "/api/gifts/popular";
-    private final String URL_NEW_GIFTS = URL_SERVER + "/api/gifts/new";
-    private final String URL_CHEAP_GIFTS = URL_SERVER + "/api/gifts/cheap";
-    private final String URL_EXPENSIVE_GIFTS = URL_SERVER + "/api/gifts/expensive";
+    private String currentUrl = GlobalUrls.URL_BEST_RATING_GIFTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +49,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, new ArrayList<Gift>());
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
+        giftsListView.setOnScrollListener(new LessScrollListener<Gift>(giftsListView, giftsAdapter, 33) {
+            @Override
+            public boolean onLoadMore(int page) {
+                new JSONTask().execute(currentUrl + "?page=" + page);
+                return false;
+            }
+        });
 
         spinnerGiftsSort = (Spinner) findViewById(R.id.spinnerGiftsSort);
         setSpinnerAdapter(spinnerGiftsSort);
@@ -63,10 +63,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //Создание выподающего Спинера-ДропДаунЛиста(для выбора списка подарков)
     private void setSpinnerAdapter(Spinner spinner) {
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item);
+        final String[] spinnerItems = {
+                "Наилучший рейтинг",
+                "Хиты продаж",
+                "Новинки",
+                "Цена по возрастанию",
+                "Цена по убыванию" };
 
-        final String[] spinnerItems = { "Наилучший рейтинг", "Хиты продаж", "Новинки", "Цена по возрастанию", "Цена по убыванию" };
-        spinnerAdapter.addAll(spinnerItems);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(spinnerAdapter);
@@ -75,15 +79,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        new JSONTask().execute(URL_BEST_RATING_GIFTS);
+                        currentUrl = GlobalUrls.URL_BEST_RATING_GIFTS;
+                        new JSONTask().execute(currentUrl);
                         break;
-                    case 1: new JSONTask().execute(URL_POPULAR_GIFTS);
+                    case 1:
+                        currentUrl = GlobalUrls.URL_POPULAR_GIFTS;
+                        new JSONTask().execute(currentUrl);
                         break;
-                    case 2: new JSONTask().execute(URL_NEW_GIFTS);
+                    case 2:
+                        currentUrl = GlobalUrls.URL_NEW_GIFTS;
+                        new JSONTask().execute(currentUrl);
                         break;
-                    case 3: new JSONTask().execute(URL_CHEAP_GIFTS);
+                    case 3:
+                        currentUrl = GlobalUrls.URL_CHEAP_GIFTS;
+                        new JSONTask().execute(currentUrl);
                         break;
-                    case 4: new JSONTask().execute(URL_EXPENSIVE_GIFTS);
+                    case 4:
+                        currentUrl = GlobalUrls.URL_EXPENSIVE_GIFTS;
+                        new JSONTask().execute(currentUrl);
                         break;
                 }
             }
@@ -146,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
             if (result != null) {
-                giftsAdapter.clear();
+//                giftsAdapter.clear();
                 giftsAdapter.addAll(result);
 
                 giftsAdapter.notifyDataSetChanged();

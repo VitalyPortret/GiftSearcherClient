@@ -16,14 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.giftsearcher.giftsearcherclient.entity.Gift;
-import com.giftsearcher.giftsearcherclient.util.GlobalConstants;
+import com.giftsearcher.giftsearcherclient.util.GlobalUrls;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.io.IOException;
 
 public class GiftDetailActivity extends AppCompatActivity {
 
-    private final String URL_SERVER = GlobalConstants.URL_SERVER;;
     private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription;
     private ImageView imageGiftDetail;
     private Toolbar toolbar;
@@ -45,7 +44,7 @@ public class GiftDetailActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setToolbar(toolbar);
 
-        String url_detail_gift = URL_SERVER + "/api/gifts/gift/" + idGift;
+        String url_detail_gift = GlobalUrls.URL_DETAIL_GIFT + idGift;
         new JSONTask().execute(url_detail_gift);
     }
 
