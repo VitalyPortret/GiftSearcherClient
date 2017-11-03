@@ -9,8 +9,19 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
     private final ListView listView;
     private final ArrayAdapter<T> listAdapter;
 
-    private final int SIZE = 10;
+    private int size = 10;
     private int page = 1;
+
+    public void setSize(int size) {
+        if (size >= 10 && size <= 100)
+            this.size = size;
+    }
+
+    public void setPage(int page) {
+        if (page >= 0)
+            this.page = page;
+    }
+
     //Кол-во элементов в запросе(без пагинации)
     private int totalItemsCount;
     //Выполняется ли метод onLoadMore
@@ -22,11 +33,12 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
         this.totalItemsCount = totalItemsCount;
     }
 
-    public LessScrollListener(ListView listView, ArrayAdapter<T> listAdapter, int totalItemsCount, int page) {
+    public LessScrollListener(ListView listView, ArrayAdapter<T> listAdapter, int totalItemsCount, int page, int size) {
         this.listView = listView;
         this.listAdapter = listAdapter;
         this.totalItemsCount = totalItemsCount;
-        this.page = page;
+        setPage(page);
+        setSize(size);
     }
 
 
@@ -46,7 +58,7 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
                         listAdapter.remove(listAdapter.getItem(0));
                     }
                 }
-                methodRuns = onLoadMore(page);
+                methodRuns = onLoadMore(page,size);
                 page++;
             }
 
@@ -58,5 +70,5 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) { }
 
     //Метод подгрузки данных
-    public abstract boolean onLoadMore(int page);
+    public abstract boolean onLoadMore(int page, int size);
 }
