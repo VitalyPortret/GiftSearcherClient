@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
         giftsListView.setOnScrollListener(new LessScrollListener<Gift>(giftsListView, giftsAdapter, 33) {
+            //todo:Исправить захардкоженый параметр - 33
             @Override
             public boolean onLoadMore(int page) {
                 new JSONTask().execute(currentUrl + "?page=" + page);
