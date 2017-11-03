@@ -19,7 +19,15 @@ tools:context="com.giftsearcher.giftsearcherclient.GiftDetailActivity">
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="0dp"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        <ImageView
+            android:id="@+id/imageLogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@android:drawable/btn_star_big_on" />
+
+    </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.AppBarLayout>
 
