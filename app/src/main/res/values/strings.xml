@@ -4,4 +4,5 @@
     <string name="action_like_gift">Мне нравится</string>
     <string name="action_wish_gifts">Избранное</string>
     <string name="action_account">Аккаунт</string>
+    <string name="where_search_gift">Где найти</string>
 </resources>
