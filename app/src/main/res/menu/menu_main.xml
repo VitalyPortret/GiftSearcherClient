@@ -6,12 +6,18 @@
     <item
         android:id="@+id/action_wish_gifts"
         android:icon="@drawable/ic_likelist"
-        android:title="@string/wish_gifts"
+        android:title="@string/action_wish_gifts"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_account"
+        android:icon="@drawable/ic_users"
+        android:title="@string/action_account"
+        app:showAsAction="ifRoom"/>
+
+    <!--<item-->
+    <!--android:id="@+id/action_settings"-->
+    <!--android:orderInCategory="100"-->
+    <!--android:title="@string/action_settings"-->
+    <!--app:showAsAction="never" />-->
 </menu>

@@ -5,20 +5,19 @@
 
     <item
         android:id="@+id/action_favorite"
-        android:icon="@drawable/ic_heart"
-        android:title="@string/like_gift"
+        android:icon="@drawable/ic_heart_plus"
+        android:title="@string/action_like_gift"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_wish_gifts"
         android:icon="@drawable/ic_likelist"
-        android:title="@string/wish_gifts"
+        android:title="@string/action_wish_gifts"
         app:showAsAction="ifRoom"/>
 
-
-    <!--<item-->
-        <!--android:id="@+id/action_settings"-->
-        <!--android:orderInCategory="100"-->
-        <!--android:title="@string/action_settings"-->
-        <!--app:showAsAction="never" />-->
+    <item
+        android:id="@+id/action_account"
+        android:icon="@drawable/ic_users"
+        android:title="@string/action_account"
+        app:showAsAction="ifRoom"/>
 </menu>

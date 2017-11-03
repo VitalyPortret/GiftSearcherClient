@@ -56,15 +56,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         giftsListView = (ListView) findViewById(R.id.giftsListView);
 
         giftList = new ArrayList<>();
@@ -119,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_account) {
             return true;
         }
 
@@ -216,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             Gift gift = giftList.get(position);
             tvGiftName.setText(gift.getNameGift());
-            tvGiftPrice.setText(String.format("%s", gift.getPrice()));
+            tvGiftPrice.setText(String.format("%s", gift.getPrice() + " ₽"));
             tvGiftAppreciated.setText(String.format("%s", gift.getAppreciated()));
 
             if (gift.getImage() != null) {

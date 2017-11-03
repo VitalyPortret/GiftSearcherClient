@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name"></string>
     <string name="action_settings">Settings</string>
-    <string name="like_gift">Мне нравится</string>
-    <string name="wish_gifts">Избранное</string>
+    <string name="action_like_gift">Мне нравится</string>
+    <string name="action_wish_gifts">Избранное</string>
+    <string name="action_account">Аккаунт</string>
 </resources>

@@ -24,7 +24,7 @@ import java.io.IOException;
 public class GiftDetailActivity extends AppCompatActivity {
 
     private final String URL_SERVER = GlobalConstants.URL_SERVER;;
-    private TextView tvGiftName, tvGiftPrice, tvGiftDescription;
+    private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription;
     private ImageView imageGiftDetail;
     private Toolbar toolbar;
 
@@ -39,6 +39,7 @@ public class GiftDetailActivity extends AppCompatActivity {
         tvGiftName = (TextView) findViewById(R.id.tvGiftName);
         tvGiftPrice = (TextView) findViewById(R.id.tvGiftPrice);
         tvGiftDescription = (TextView) findViewById(R.id.tvGiftDescription);
+        tvGiftAppreciated = (TextView) findViewById(R.id.tvGiftAppreciated);
         imageGiftDetail = (ImageView) findViewById(R.id.imageGiftDetail);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
@@ -53,7 +54,6 @@ public class GiftDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        toolbar.setTitle("List Activity");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -74,8 +74,8 @@ public class GiftDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                Toast.makeText(this,"Настройки", Toast.LENGTH_SHORT).show();
+            case R.id.action_account:
+                Toast.makeText(this,"Аккаунт", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_favorite:
                 Toast.makeText(this,"Мне нравится", Toast.LENGTH_SHORT).show();
@@ -87,8 +87,9 @@ public class GiftDetailActivity extends AppCompatActivity {
 
     private void setGiftDetailField(Gift gift) {
         tvGiftName.setText(gift.getNameGift());
-        tvGiftPrice.setText(String.format("%s", gift.getPrice()));
+        tvGiftPrice.setText(String.format("%s", gift.getPrice() + " ₽"));
         tvGiftDescription.setText(gift.getDescription());
+        tvGiftAppreciated.setText(String.format("%d", gift.getAppreciated()));
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
