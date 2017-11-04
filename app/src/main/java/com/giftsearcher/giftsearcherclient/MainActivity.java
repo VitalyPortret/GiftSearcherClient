@@ -33,9 +33,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private GiftListAdapter giftsAdapter;
+
     private ListView giftsListView;
     private Spinner spinnerGiftsSort;
 
+    //Предназначена для того чтобы
+    //определить нужно ли, очищать список в адапторе
+    private boolean cleanAdapterList;
     private String currentUrl = GlobalUrls.URL_BEST_RATING_GIFTS;
 
     @Override
@@ -49,12 +53,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         giftsAdapter = new GiftListAdapter(MainActivity.this, R.layout.gift_list_item, new ArrayList<Gift>());
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
+
         giftsListView.setOnScrollListener(new LessScrollListener<Gift>(giftsListView, giftsAdapter, 33) {
             //todo:Исправить захардкоженый параметр - 33
             @Override
-            public boolean onLoadMore(int page) {
+            public void onLoadMore(int page) {
                 new JSONTask().execute(currentUrl + "?page=" + page);
-                return false;
+                cleanAdapterList = false;
+            }
+
+            @Override
+            public boolean onUpdatePage() {
+                return cleanAdapterList;
             }
         });
 
@@ -64,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //Создание выподающего Спинера-ДропДаунЛиста(для выбора списка подарков)
     private void setSpinnerAdapter(Spinner spinner) {
+        //Категории
         final String[] spinnerItems = {
                 "Наилучший рейтинг",
                 "Хиты продаж",
@@ -81,25 +92,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 switch (position) {
                     case 0:
                         currentUrl = GlobalUrls.URL_BEST_RATING_GIFTS;
-                        new JSONTask().execute(currentUrl);
                         break;
                     case 1:
                         currentUrl = GlobalUrls.URL_POPULAR_GIFTS;
-                        new JSONTask().execute(currentUrl);
                         break;
                     case 2:
                         currentUrl = GlobalUrls.URL_NEW_GIFTS;
-                        new JSONTask().execute(currentUrl);
                         break;
                     case 3:
                         currentUrl = GlobalUrls.URL_CHEAP_GIFTS;
-                        new JSONTask().execute(currentUrl);
                         break;
                     case 4:
                         currentUrl = GlobalUrls.URL_EXPENSIVE_GIFTS;
-                        new JSONTask().execute(currentUrl);
                         break;
                 }
+
+                new JSONTask().execute(currentUrl);
+                cleanAdapterList = true;
             }
 
             @Override
@@ -120,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (id == R.id.action_account) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -160,9 +168,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
             if (result != null) {
-//                giftsAdapter.clear();
+                if (cleanAdapterList) {
+                    //Скролл к первому элементу
+                    giftsListView.smoothScrollToPosition(0);
+                    giftsAdapter.clear();
+                }
                 giftsAdapter.addAll(result);
-
                 giftsAdapter.notifyDataSetChanged();
             }
         }

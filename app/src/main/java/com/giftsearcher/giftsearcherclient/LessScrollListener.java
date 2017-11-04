@@ -17,8 +17,6 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
 
     //Кол-во элементов в запросе(без пагинации)
     private int totalItemsCount;
-    //Выполняется ли метод onLoadMore
-    private boolean methodRuns = false;
 
     public LessScrollListener(ListView listView, ArrayAdapter<T> listAdapter, int totalItemsCount) {
         this.listView = listView;
@@ -41,16 +39,18 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
                 listView.getHeaderViewsCount() -
                 listView.getFooterViewsCount()) >= (listAdapter.getCount() - 1)) {
 
-            if ((page + 1) <= Math.ceil(totalItemsCount / (double)10) && !methodRuns) {
+            page = (onUpdatePage()) ? 1 : page;
 
-                methodRuns = true;
+            if ((page + 1) <= Math.ceil(totalItemsCount / (double)10)) {
+
                 if (listAdapter.getCount() >= 20) {
-                    for (int i = 0; i < 10; i++) {
+                    int listAdapterCount = listAdapter.getCount();
+                    for (int i = 0; i < (listAdapterCount / 2); i++) {
                         //Удаляет всегда первый элемент списка(самый старый элемент)
                         listAdapter.remove(listAdapter.getItem(0));
                     }
                 }
-                methodRuns = onLoadMore(page);
+                onLoadMore(page);
                 page++;
             }
         }
@@ -59,6 +59,10 @@ public abstract class LessScrollListener<T> implements AbsListView.OnScrollListe
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) { }
 
-    //Метод подгрузки данных
-    public abstract boolean onLoadMore(int page);
+    //Метод подгрузки новых данных
+    public abstract void onLoadMore(int page);
+
+    //Метод по условию которого будет
+    //обновляться this.page
+    public abstract boolean onUpdatePage();
 }
