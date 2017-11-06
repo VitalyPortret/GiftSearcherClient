@@ -63,7 +63,7 @@ public class GiftDetailActivity extends AppCompatActivity {
 
             String htmlText = new String(buffer);
             myWebView.loadDataWithBaseURL(
-                    "http://ru.yandex.api.yandexmapswebviewexample.ymapapp",
+                    "http://com.yandex.browser.ymapapp",
                     htmlText,
                     "text/html",
                     "UTF-8",
