@@ -109,7 +109,7 @@
                 android:layout_marginBottom="8dp" />
 
             <ru.yandex.yandexmapkit.MapView
-                android:id="@+id/map"
+                android:id="@+id/yandexMap"
                 android:layout_width="match_parent"
                 android:layout_height="243dp"
                 android:apiKey="1234567890"

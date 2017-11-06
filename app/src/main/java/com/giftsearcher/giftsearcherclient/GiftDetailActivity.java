@@ -21,6 +21,10 @@ import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.io.IOException;
 
+import ru.yandex.yandexmapkit.MapController;
+import ru.yandex.yandexmapkit.MapView;
+import ru.yandex.yandexmapkit.utils.GeoPoint;
+
 public class GiftDetailActivity extends AppCompatActivity {
 
     private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription;
@@ -44,8 +48,19 @@ public class GiftDetailActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setToolbar(toolbar);
 
+        final MapView yandexMapView = (MapView) findViewById(R.id.yandexMap);
+        setYandexMapView(yandexMapView);
+
         String url_detail_gift = GlobalUrls.URL_DETAIL_GIFT + idGift;
         new JSONTask().execute(url_detail_gift);
+    }
+
+    private void setYandexMapView(MapView mapView) {
+        // Получаем MapController
+        MapController mMapController = mapView.getMapController();
+        // Перемещаем карту на заданные координаты
+        mMapController.setPositionAnimationTo(new GeoPoint(27.525773, 53.89079));
+        mMapController.setZoomCurrent(15);
     }
 
     private void setToolbar(Toolbar toolbar) {
