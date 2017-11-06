@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.giftsearcher.giftsearcherclient.util.GlobalUrls;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
@@ -48,19 +51,30 @@ public class GiftDetailActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setToolbar(toolbar);
 
-        final MapView yandexMapView = (MapView) findViewById(R.id.yandexMap);
-        setYandexMapView(yandexMapView);
+        WebView myWebView = (WebView) findViewById(R.id.map);
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        try {
+            InputStream is = getAssets().open("index.html");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            is.close();
+
+            String htmlText = new String(buffer);
+            myWebView.loadDataWithBaseURL(
+                    "http://ru.yandex.api.yandexmapswebviewexample.ymapapp",
+                    htmlText,
+                    "text/html",
+                    "UTF-8",
+                    null
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String url_detail_gift = GlobalUrls.URL_DETAIL_GIFT + idGift;
         new JSONTask().execute(url_detail_gift);
-    }
-
-    private void setYandexMapView(MapView mapView) {
-        // Получаем MapController
-        MapController mMapController = mapView.getMapController();
-        // Перемещаем карту на заданные координаты
-        mMapController.setPositionAnimationTo(new GeoPoint(27.525773, 53.89079));
-        mMapController.setZoomCurrent(15);
     }
 
     private void setToolbar(Toolbar toolbar) {

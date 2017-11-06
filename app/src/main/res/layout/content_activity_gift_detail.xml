@@ -100,21 +100,21 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/where_search_gift"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorText"
-                android:layout_marginBottom="8dp" />
+                android:textSize="16sp" />
 
-            <ru.yandex.yandexmapkit.MapView
-                android:id="@+id/yandexMap"
+            <WebView
+                android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="243dp"
-                android:apiKey="1234567890"
-                android:tag="static"
-                android:layout_weight="1"/>
+                android:layout_height="300dp"
+                android:layout_weight="13.17" />
+
 
         </LinearLayout>
     </ScrollView>
