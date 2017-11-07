@@ -38,7 +38,6 @@ public class GiftDetailActivity extends AppCompatActivity {
     private Toolbar toolbar;
     MapController mMapController;
     OverlayManager mOverlayManager;
-    MapView mapView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,24 +67,19 @@ public class GiftDetailActivity extends AppCompatActivity {
 
         // A simple implementation of map objects
         showObject();
-
-
-
     }
 
     public void showObject(){
         // Load required resources
         Resources res = getResources();
-
         // Create a layer of objects for the map
         Overlay overlay = new Overlay(mMapController);
-
         // Create an object for the layer
-        final OverlayItem kremlin = new OverlayItem(new GeoPoint(55.752004, 37.617017), res.getDrawable(R.drawable.ic_users));
+        final OverlayItem kremlin = new OverlayItem(new GeoPoint(55.752004, 37.617017), res.getDrawable(R.drawable.ic_heart2));
         // Create a balloon model for the object
         BalloonItem balloonKremlin = new BalloonItem(this,kremlin.getGeoPoint());
         balloonKremlin.setText("Биби");
-//        // Add the balloon model to the object
+        // Add the balloon model to the object
         kremlin.setBalloonItem(balloonKremlin);
         // Add the object to the layer
         overlay.addOverlayItem(kremlin);
@@ -99,27 +93,8 @@ public class GiftDetailActivity extends AppCompatActivity {
         yandex.setBalloonItem(balloonYandex);
         // Add the object to the layer
         overlay.addOverlayItem(yandex);
-
-
-        final OverlayItem parkKultury = new OverlayItem(new GeoPoint(55.735562 , 37.594215), res.getDrawable(R.drawable.ic_heart2));
-        parkKultury.setOverlayItemListener(new OnOverlayItemListener(){
-            public void onClick(OverlayItem clickItem){
-                Log.w("DefaultOverlayActivity", "Park Kultury");
-            }
-        });
-        overlay.addOverlayItem(parkKultury);
-
-        final OverlayItem parkPobedy = new OverlayItem(new GeoPoint(55.736238, 37.516079), res.getDrawable(R.drawable.ic_not_like));
-        parkPobedy.setOverlayItemListener(new OnOverlayItemListener(){
-            public void onClick(OverlayItem clickItem){
-                Log.w("DefaultOverlayActivity", "Park Pobedy");
-            }
-        });
-        overlay.addOverlayItem(parkPobedy);
-
         // Add the layer to the map
         mOverlayManager.addOverlay(overlay);
-
     }
 
     private void setToolbar(Toolbar toolbar) {
