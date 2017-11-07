@@ -109,13 +109,13 @@
                 android:textColor="@color/colorText"
                 android:textSize="16sp" />
 
-            <ru.yandex.yandexmapkit.MapView
-                android:id="@+id/map"
-                android:layout_width="fill_parent"
-                android:layout_height="300dp"
+            <Button
+                android:id="@+id/buttonOnMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:apiKey="1234567890"
-                android:tag="static" />
+                android:text="Button" />
+
 
         </LinearLayout>
     </ScrollView>

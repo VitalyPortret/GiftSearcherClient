@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +26,12 @@ import java.io.IOException;
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
 import ru.yandex.yandexmapkit.OverlayManager;
-import ru.yandex.yandexmapkit.overlay.OnOverlayItemListener;
 import ru.yandex.yandexmapkit.overlay.Overlay;
 import ru.yandex.yandexmapkit.overlay.OverlayItem;
 import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-public class GiftDetailActivity extends AppCompatActivity {
+public class GiftDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription;
     private ImageView imageGiftDetail;
@@ -58,43 +58,8 @@ public class GiftDetailActivity extends AppCompatActivity {
 
         String url_detail_gift = GlobalUrls.URL_DETAIL_GIFT + idGift;
         new JSONTask().execute(url_detail_gift);
-        final MapView mapView = (MapView) findViewById(R.id.map);
-
-        mMapController = mapView.getMapController();
-        mOverlayManager = mMapController.getOverlayManager();
-        // Disable determining the user's location
-        mOverlayManager.getMyLocation().setEnabled(false);
-
-        // A simple implementation of map objects
-        showObject();
-    }
-
-    public void showObject(){
-        // Load required resources
-        Resources res = getResources();
-        // Create a layer of objects for the map
-        Overlay overlay = new Overlay(mMapController);
-        // Create an object for the layer
-        final OverlayItem kremlin = new OverlayItem(new GeoPoint(55.752004, 37.617017), res.getDrawable(R.drawable.ic_heart2));
-        // Create a balloon model for the object
-        BalloonItem balloonKremlin = new BalloonItem(this,kremlin.getGeoPoint());
-        balloonKremlin.setText("Биби");
-        // Add the balloon model to the object
-        kremlin.setBalloonItem(balloonKremlin);
-        // Add the object to the layer
-        overlay.addOverlayItem(kremlin);
-
-        // Create an object for the layer
-        final OverlayItem yandex = new OverlayItem(new GeoPoint(55.734182, 37.588142), res.getDrawable(R.drawable.ic_heart1));
-        // Create the balloon model for the object
-        BalloonItem balloonYandex = new BalloonItem(this,yandex.getGeoPoint());
-        balloonYandex.setText("KJK");
-        // Add the balloon model to the object
-        yandex.setBalloonItem(balloonYandex);
-        // Add the object to the layer
-        overlay.addOverlayItem(yandex);
-        // Add the layer to the map
-        mOverlayManager.addOverlay(overlay);
+        Button buttonOnMap = (Button) findViewById(R.id.buttonOnMap);
+        buttonOnMap.setOnClickListener(this);
     }
 
     private void setToolbar(Toolbar toolbar) {
@@ -143,6 +108,15 @@ public class GiftDetailActivity extends AppCompatActivity {
         options.inMutable = true;
         Bitmap bmp = BitmapFactory.decodeByteArray(gift.getImage(), 0, gift.getImage().length, options);
         imageGiftDetail.setImageBitmap(bmp);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.buttonOnMap) {
+            Intent intent = new Intent(this, YandexMapActivity.class);
+            startActivity(intent);
+        }
     }
 
     private class JSONTask extends AsyncTask<String, Void, Gift> {
