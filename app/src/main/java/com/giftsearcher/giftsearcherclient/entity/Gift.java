@@ -22,6 +22,8 @@ public class Gift {
 
     private String gender;
 
+    private Shop shop;
+
     public long getId() {
         return id;
     }
@@ -92,6 +94,14 @@ public class Gift {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
 
     @Override

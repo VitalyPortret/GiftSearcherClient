@@ -8,10 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.giftsearcher.giftsearcherclient.entity.Address;
-import com.giftsearcher.giftsearcherclient.entity.Gift;
 import com.giftsearcher.giftsearcherclient.entity.Shop;
+import com.giftsearcher.giftsearcherclient.util.GlobalUrls;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.io.IOException;
@@ -24,31 +25,32 @@ import ru.yandex.yandexmapkit.overlay.OverlayItem;
 import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
 import ru.yandex.yandexmapkit.utils.GeoPoint;
 
-
 public class YandexMapActivity extends AppCompatActivity {
 
     private MapController mMapController;
     private OverlayManager mOverlayManager;
+    private TextView tvShopName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yandex_map);
-//        Intent intent = getIntent();
-//        long idShop = intent.getLongExtra("idShop", 0);
-        final MapView mapView = (MapView) findViewById(R.id.map);
 
+        Intent intent = getIntent();
+        final long idShop = intent.getLongExtra("idShop", 0);
+        final String url_shop = GlobalUrls.URL_SHOP + idShop;
+        new JsonYandexMapTask().execute(url_shop);
+
+        tvShopName = (TextView) findViewById(R.id.tvShopName);
+
+        final MapView mapView = (MapView) findViewById(R.id.map);
+        mapView.showFindMeButton(true);
         mMapController = mapView.getMapController();
         mMapController.showFindMeButton(true);
         mMapController.setZoomCurrent(15);
-        mMapController.setPositionAnimationTo(new GeoPoint(56.128721, 40.402729));
         mOverlayManager = mMapController.getOverlayManager();
-        // Disable determining the user's location
-        mOverlayManager.getMyLocation().setEnabled(true);
-        // A simple implementation of map objects
-        new JsonYandexMapTask().execute("");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setToolbar(toolbar);
     }
 
@@ -66,29 +68,35 @@ public class YandexMapActivity extends AppCompatActivity {
     }
 
     public void showObject(Shop shop) {
-        // Load required resources
+        //Загрузка ресурсов
         Resources res = getResources();
-        // Create a layer of objects for the map
+        // Создание слоя для добавления обектов на карту
         Overlay overlay = new Overlay(mMapController);
-        // Create an object for the layer
-        setTitle(shop.getShopName());
+        tvShopName.setText(shop.getShopName());
+        Address firstAddress = shop.getAddressList().get(0);
+        double latitude = firstAddress.getGeoData().getLatitude();
+        double longitude = firstAddress.getGeoData().getLongitude();
+
+        mMapController.setPositionAnimationTo(new GeoPoint(latitude, longitude));
+
         for (Address address : shop.getAddressList()) {
+            // Создание объекта для этого слоя
             OverlayItem overlayItem = new OverlayItem(
                     new GeoPoint(address.getGeoData().getLatitude(), address.getGeoData().getLongitude()),
-                    res.getDrawable(R.drawable.ic_map_flag));
-            // Create a balloon model for the object
+                    res.getDrawable(R.drawable.ic_map_flag)
+            );
+            // Создание bolloon для объекта
             BalloonItem balloonItem = new BalloonItem(this,overlayItem.getGeoPoint());
             balloonItem.setText(address.getAddress());
-            // Add the balloon model to the object
+            // Добавление bolloon в объект
             overlayItem.setBalloonItem(balloonItem);
-            // Add the object to the layer
+            // Добавление объекта на слой
             overlay.addOverlayItem(overlayItem);
         }
         mOverlayManager.addOverlay(overlay);
     }
 
     private class JsonYandexMapTask extends AsyncTask<String, Void, Shop> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -107,8 +115,9 @@ public class YandexMapActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Shop shop) {
             super.onPostExecute(shop);
-
-            showObject(shop);
+            if (shop != null){
+                showObject(shop);
+            }
         }
     }
 }

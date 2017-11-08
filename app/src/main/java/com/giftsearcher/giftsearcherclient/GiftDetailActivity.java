@@ -1,7 +1,6 @@
 package com.giftsearcher.giftsearcherclient;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +25,7 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
 
     private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription;
     private ImageView imageGiftDetail;
-    private Toolbar toolbar;
+    private Gift gift;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,11 +41,12 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
         tvGiftAppreciated = (TextView) findViewById(R.id.tvGiftAppreciated);
         imageGiftDetail = (ImageView) findViewById(R.id.imageGiftDetail);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
         setToolbar(toolbar);
 
-        String url_detail_gift = GlobalUrls.URL_DETAIL_GIFT + idGift;
+        final String url_detail_gift = GlobalUrls.URL_DETAIL_GIFT + idGift;
         new JSONTask().execute(url_detail_gift);
+
         Button buttonOnMap = (Button) findViewById(R.id.buttonOnMap);
         buttonOnMap.setOnClickListener(this);
     }
@@ -84,7 +83,6 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
                 Toast.makeText(this,"Мне нравится", Toast.LENGTH_SHORT).show();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -102,15 +100,16 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-
         if (v.getId() == R.id.buttonOnMap) {
             Intent intent = new Intent(this, YandexMapActivity.class);
+            if (gift != null) {
+                intent.putExtra("idShop", gift.getShop().getId());
+            }
             startActivity(intent);
         }
     }
 
     private class JSONTask extends AsyncTask<String, Void, Gift> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -127,10 +126,14 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
         }
 
         @Override
-        protected void onPostExecute(Gift gift) {
-            super.onPostExecute(gift);
+        protected void onPostExecute(Gift outputGift) {
+            super.onPostExecute(outputGift);
 
-            setGiftDetailField(gift);
+            if (outputGift == null) {
+                return;
+            }
+            gift = outputGift;
+            setGiftDetailField(outputGift);
         }
     }
 }

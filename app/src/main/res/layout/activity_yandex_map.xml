@@ -21,22 +21,22 @@ tools:context="com.giftsearcher.giftsearcherclient.GiftDetailActivity">
         android:elevation="0dp"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <ImageView
-            android:id="@+id/imageLogo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher" />
+        <TextView
+            android:id="@+id/tvShopName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:textSize="23sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/colorBackgroudApp"
+            android:layout_weight="0.64" />
 
     </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.AppBarLayout>
 
-    <ru.yandex.yandexmapkit.MapView
-        android:id="@+id/map"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:apiKey="1234567890"
-        android:tag="static" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_yandex_map" />
 
 </android.support.design.widget.CoordinatorLayout>
