@@ -1,14 +1,10 @@
 package com.giftsearcher.giftsearcherclient.entity;
 
-import java.util.Date;
-
 public class Gift {
 
     private long id;
 
     private String nameGift;
-
-    private String imagePath;
 
     private String description;
 
@@ -17,10 +13,6 @@ public class Gift {
     private double price;
 
     private int appreciated;
-
-    private Date dateAdding;
-
-    private String gender;
 
     private Shop shop;
 
@@ -38,14 +30,6 @@ public class Gift {
 
     public void setNameGift(String nameGift) {
         this.nameGift = nameGift;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
     }
 
     public String getDescription() {
@@ -80,22 +64,6 @@ public class Gift {
         this.appreciated = appreciated;
     }
 
-    public Date getDateAdding() {
-        return dateAdding;
-    }
-
-    public void setDateAdding(Date dateAdding) {
-        this.dateAdding = dateAdding;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public Shop getShop() {
         return shop;
     }
@@ -104,15 +72,12 @@ public class Gift {
         this.shop = shop;
     }
 
-    @Override
-    public String toString() {
-        return "Gift{" +
-                "nameGift='" + nameGift + '\'' +
-                ", imagePath='" + imagePath + '\'' +
-                ", price=" + price +
-                ", appreciated=" + appreciated +
-                ", dateAdding=" + dateAdding +
-                ", gender='" + gender + '\'' +
-                '}';
+    public Gift(long id, String nameGift, String description, byte[] image, double price, int appreciated) {
+        this.id = id;
+        this.nameGift = nameGift;
+        this.description = description;
+        this.image = image;
+        this.price = price;
+        this.appreciated = appreciated;
     }
 }
