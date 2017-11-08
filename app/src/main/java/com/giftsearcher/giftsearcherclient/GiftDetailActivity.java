@@ -23,21 +23,11 @@ import com.giftsearcher.giftsearcherclient.util.GlobalUrls;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 import java.io.IOException;
 
-import ru.yandex.yandexmapkit.MapController;
-import ru.yandex.yandexmapkit.MapView;
-import ru.yandex.yandexmapkit.OverlayManager;
-import ru.yandex.yandexmapkit.overlay.Overlay;
-import ru.yandex.yandexmapkit.overlay.OverlayItem;
-import ru.yandex.yandexmapkit.overlay.balloon.BalloonItem;
-import ru.yandex.yandexmapkit.utils.GeoPoint;
-
 public class GiftDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription;
     private ImageView imageGiftDetail;
     private Toolbar toolbar;
-    MapController mMapController;
-    OverlayManager mOverlayManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

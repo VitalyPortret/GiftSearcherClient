@@ -109,16 +109,33 @@
                 android:textColor="@color/colorText"
                 android:textSize="16sp" />
 
-            <Button
-                android:id="@+id/buttonOnMap"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Button" />
+                android:orientation="horizontal"
+                android:weightSum="1">
 
+                <TextView
+                    android:id="@+id/tvShopName"
+                    android:layout_width="166dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/colorText"
+                    android:layout_weight="0.64" />
+
+                <Button
+                    android:id="@+id/buttonOnMap"
+                    android:layout_width="130dp"
+                    android:layout_height="37dp"
+                    android:text="На карте" />
+
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
 
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
