@@ -2,11 +2,19 @@ package com.giftsearcher.giftsearcherclient;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.giftsearcher.giftsearcherclient.entity.Address;
+import com.giftsearcher.giftsearcherclient.entity.Gift;
+import com.giftsearcher.giftsearcherclient.entity.Shop;
+import com.giftsearcher.giftsearcherclient.util.JSONUtil;
+
+import java.io.IOException;
 
 import ru.yandex.yandexmapkit.MapController;
 import ru.yandex.yandexmapkit.MapView;
@@ -38,8 +46,7 @@ public class YandexMapActivity extends AppCompatActivity {
         // Disable determining the user's location
         mOverlayManager.getMyLocation().setEnabled(true);
         // A simple implementation of map objects
-        showObject();
-
+        new JsonYandexMapTask().execute("");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setToolbar(toolbar);
@@ -58,22 +65,50 @@ public class YandexMapActivity extends AppCompatActivity {
         });
     }
 
-    public void showObject() {
+    public void showObject(Shop shop) {
         // Load required resources
         Resources res = getResources();
         // Create a layer of objects for the map
         Overlay overlay = new Overlay(mMapController);
         // Create an object for the layer
-        final OverlayItem kremlin = new OverlayItem(new GeoPoint(56.128721, 40.402729), res.getDrawable(R.drawable.ic_map_flag));
-        // Create a balloon model for the object
-        BalloonItem balloonKremlin = new BalloonItem(this,kremlin.getGeoPoint());
-        balloonKremlin.setText("Биби");
-
-        // Add the balloon model to the object
-        kremlin.setBalloonItem(balloonKremlin);
-        // Add the object to the layer
-        overlay.addOverlayItem(kremlin);
-
+        setTitle(shop.getShopName());
+        for (Address address : shop.getAddressList()) {
+            OverlayItem overlayItem = new OverlayItem(
+                    new GeoPoint(address.getGeoData().getLatitude(), address.getGeoData().getLongitude()),
+                    res.getDrawable(R.drawable.ic_map_flag));
+            // Create a balloon model for the object
+            BalloonItem balloonItem = new BalloonItem(this,overlayItem.getGeoPoint());
+            balloonItem.setText(address.getAddress());
+            // Add the balloon model to the object
+            overlayItem.setBalloonItem(balloonItem);
+            // Add the object to the layer
+            overlay.addOverlayItem(overlayItem);
+        }
         mOverlayManager.addOverlay(overlay);
+    }
+
+    private class JsonYandexMapTask extends AsyncTask<String, Void, Shop> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Shop doInBackground(String... params) {
+            try {
+                return JSONUtil.getShopFromJSON(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Shop shop) {
+            super.onPostExecute(shop);
+
+            showObject(shop);
+        }
     }
 }
