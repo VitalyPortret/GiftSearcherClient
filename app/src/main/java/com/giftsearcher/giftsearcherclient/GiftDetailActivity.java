@@ -76,7 +76,7 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_account:
+            case R.id.action_wish_gifts:
                 Toast.makeText(this,"Аккаунт", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_favorite:
