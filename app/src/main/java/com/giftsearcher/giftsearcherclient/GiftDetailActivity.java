@@ -23,7 +23,7 @@ import java.io.IOException;
 
 public class GiftDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription;
+    private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription, tvShopName, tvShopAddress;
     private ImageView imageGiftDetail;
     private Gift gift;
 
@@ -39,6 +39,8 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
         tvGiftPrice = (TextView) findViewById(R.id.tvGiftPrice);
         tvGiftDescription = (TextView) findViewById(R.id.tvGiftDescription);
         tvGiftAppreciated = (TextView) findViewById(R.id.tvGiftAppreciated);
+        tvShopName = (TextView) findViewById(R.id.tvShopName);
+        tvShopAddress = (TextView) findViewById(R.id.tvShopAddress);
         imageGiftDetail = (ImageView) findViewById(R.id.imageGiftDetail);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_detail);
@@ -90,6 +92,10 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
         tvGiftName.setText(gift.getNameGift());
         tvGiftPrice.setText(String.format("%s", gift.getPrice() + " ₽"));
         tvGiftDescription.setText(gift.getDescription());
+        tvShopName.setText(gift.getShop().getShopName());
+        if (!gift.getShop().getAddressList().isEmpty()) {
+            tvShopAddress.setText(gift.getShop().getAddressList().get(0).getAddress());
+        }
         tvGiftAppreciated.setText(String.format("%d", gift.getAppreciated()));
 
         BitmapFactory.Options options = new BitmapFactory.Options();

@@ -115,16 +115,29 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <TextView
-                    android:id="@+id/tvShopName"
-                    android:layout_width="166dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/colorText"
-                    android:layout_weight="0.64" />
+                <LinearLayout
+                    android:layout_width="169dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="0.88">
+
+                    <TextView
+                        android:id="@+id/tvShopName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/tvShopAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="@color/colorBlack"/>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/buttonOnMap"
