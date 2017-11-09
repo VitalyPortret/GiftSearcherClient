@@ -126,10 +126,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_wish_gifts) {
-            Intent intent = new Intent(this, WishGiftsActivity.class);
-            startActivity(intent);
-            return true;
+        Intent intent;
+        switch (id) {
+            case R.id.action_wish_gifts:
+                intent = new Intent(this, WishGiftsActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.action_advanced_search:
+                intent = new Intent(this, AdvancedSearchActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

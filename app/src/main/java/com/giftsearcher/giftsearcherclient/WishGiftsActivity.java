@@ -56,6 +56,12 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == R.id.action_advanced_search) {
+            Intent intent = new Intent(this, AdvancedSearchActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -74,7 +80,14 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Gift gift = giftsAdapter.getItem(position);
+        if (gift == null) {
+            return;
+        }
 
+        Intent intent = new Intent(this, GiftDetailActivity.class);
+        intent.putExtra("id", gift.getId());
+        startActivity(intent);
     }
 
     //Адаптер для вывода СПИСКА ПОДАРКОВ!

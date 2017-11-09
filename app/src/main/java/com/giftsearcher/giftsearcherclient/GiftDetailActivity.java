@@ -81,17 +81,24 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        Intent intent;
         switch (id) {
-            case R.id.action_wish_gifts:
-                Intent intent = new Intent(this, WishGiftsActivity.class);
+            case R.id.action_advanced_search:
+                intent = new Intent(this, AdvancedSearchActivity.class);
                 startActivity(intent);
-                break;
+                return true;
+
+            case R.id.action_wish_gifts:
+                intent = new Intent(this, WishGiftsActivity.class);
+                startActivity(intent);
+                return true;
+
             case R.id.action_favorite:
                 if (gift != null) {
                     giftDbHelper.addGift(gift);
                 }
                 Toast.makeText(this,"Добавлено в понравившиеся", Toast.LENGTH_SHORT).show();
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
