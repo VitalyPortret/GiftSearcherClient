@@ -1,8 +1,8 @@
 package com.giftsearcher.giftsearcherclient;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,14 +22,15 @@ import android.widget.TextView;
 import com.giftsearcher.giftsearcherclient.DbHelper.GiftDbHelper;
 import com.giftsearcher.giftsearcherclient.entity.Gift;
 import com.giftsearcher.giftsearcherclient.util.ImageUtil;
+import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
+import java.io.IOException;
 import java.util.List;
 
-public class WishGiftsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class AdvancedSearchActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ListView giftsListView;
     private GiftListAdapter giftsAdapter;
-    private GiftDbHelper giftDbHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,10 +40,8 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setToolbar(toolbar);
 
-        giftDbHelper = new GiftDbHelper(this);
-
         giftsListView = (ListView) findViewById(R.id.wishGiftsListView);
-        giftsAdapter = new GiftListAdapter(WishGiftsActivity.this, R.layout.gift_list_item, giftDbHelper.getGifts());
+        giftsAdapter = new GiftListAdapter(AdvancedSearchActivity.this, R.layout.gift_list_item, );
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
     }
@@ -75,6 +74,34 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+
+    //Обработка запросов в фоновом потоке
+    private class JSONTask extends AsyncTask<String, Void, List<Gift>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected List<Gift> doInBackground(String... params) {
+            try {
+                return JSONUtil.getGiftListFromJSON(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Gift> result) {
+            super.onPostExecute(result);
+            if (result != null) {
+                giftsAdapter.addAll(result);
+                giftsAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     //Адаптер для вывода СПИСКА ПОДАРКОВ!
