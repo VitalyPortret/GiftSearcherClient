@@ -1,6 +1,7 @@
 package com.giftsearcher.giftsearcherclient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,6 +46,18 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
         giftsAdapter = new GiftListAdapter(WishGiftsActivity.this, R.layout.gift_list_item, giftDbHelper.getGifts());
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_wish_gifts, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        return super.onOptionsItemSelected(item);
     }
 
     private void setToolbar(Toolbar toolbar) {
