@@ -72,6 +72,8 @@ public class Gift {
         this.shop = shop;
     }
 
+    public Gift() {}
+
     public Gift(long id, String nameGift, String description, byte[] image, double price, int appreciated) {
         this.id = id;
         this.nameGift = nameGift;

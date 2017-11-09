@@ -59,7 +59,7 @@ public class GiftDbHelper extends SQLiteOpenHelper  {
         onCreate(db);
     }
 
-    public long createGift(Gift gift) {
+    public long addGift(Gift gift) {
         db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -84,7 +84,7 @@ public class GiftDbHelper extends SQLiteOpenHelper  {
         return result;
     }
 
-    public List<Gift> getGiftList() {
+    public List<Gift> getGifts() {
         List<Gift> gifts = new ArrayList<>();
         db = this.getReadableDatabase();
 

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.giftsearcher.giftsearcherclient.DbHelper.GiftDbHelper;
 import com.giftsearcher.giftsearcherclient.entity.Gift;
 import com.giftsearcher.giftsearcherclient.util.GlobalUrls;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
@@ -26,6 +27,7 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
     private TextView tvGiftName,tvGiftAppreciated, tvGiftPrice, tvGiftDescription, tvShopName, tvShopAddress;
     private ImageView imageGiftDetail;
     private Gift gift;
+    private GiftDbHelper giftDbHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
 
         Button buttonOnMap = (Button) findViewById(R.id.buttonOnMap);
         buttonOnMap.setOnClickListener(this);
+
+        giftDbHelper = new GiftDbHelper(this);
     }
 
     private void setToolbar(Toolbar toolbar) {
@@ -79,10 +83,14 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
 
         switch (id) {
             case R.id.action_wish_gifts:
-                Toast.makeText(this,"Аккаунт", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, WishGiftsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.action_favorite:
-                Toast.makeText(this,"Мне нравится", Toast.LENGTH_SHORT).show();
+                if (gift != null) {
+                    giftDbHelper.addGift(gift);
+                }
+                Toast.makeText(this,"Добавлено в понравившиеся", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
