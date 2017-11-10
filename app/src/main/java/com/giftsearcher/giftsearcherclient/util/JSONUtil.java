@@ -166,17 +166,24 @@ public class JSONUtil {
             connection.setRequestProperty("Content-Length", "" + Integer.toString(params.getBytes().length));
             connection.setDoInput(true);
             connection.setDoOutput(true);
+            OutputStream os = connection.getOutputStream();
+            byte[] data = params.getBytes("UTF-8");
+            os.write(data);
             connection.connect();
 
-            inputStream  = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder stringBuilder = new StringBuilder();
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                inputStream  = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
 
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+                return JSON.parseArray(stringBuilder.toString(), Gift.class);
             }
-            return JSON.parseArray(stringBuilder.toString(), Gift.class);
+            return null;
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -193,5 +200,4 @@ public class JSONUtil {
             }
         }
     }
-
 }
