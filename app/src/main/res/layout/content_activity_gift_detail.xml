@@ -109,15 +109,46 @@
                 android:textColor="@color/colorText"
                 android:textSize="16sp" />
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
-                android:apiKey="AIzaSyA7V09a7C7NgOq9kFWNDQTuCbIf4iBrHPA"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="169dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="0.88">
+
+                    <TextView
+                        android:id="@+id/tvShopName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/tvShopAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="@color/colorBlack"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonOnMap"
+                    android:layout_width="130dp"
+                    android:layout_height="37dp"
+                    android:text="На карте" />
+
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
 
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

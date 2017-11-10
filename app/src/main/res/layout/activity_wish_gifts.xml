@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/colorBackgroudApp"
-tools:context="com.giftsearcher.giftsearcherclient.GiftDetailActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroudApp"
+    tools:context="com.giftsearcher.giftsearcherclient.WishGiftsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -14,11 +14,10 @@ tools:context="com.giftsearcher.giftsearcherclient.GiftDetailActivity">
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_detail"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            android:elevation="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <ImageView
@@ -28,11 +27,10 @@ tools:context="com.giftsearcher.giftsearcherclient.GiftDetailActivity">
                 android:src="@mipmap/ic_launcher" />
 
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
 
     <include
         android:id="@+id/include"
-        layout="@layout/content_activity_gift_detail" />
+        layout="@layout/content_wish_gifts" />
 
 </android.support.design.widget.CoordinatorLayout>
