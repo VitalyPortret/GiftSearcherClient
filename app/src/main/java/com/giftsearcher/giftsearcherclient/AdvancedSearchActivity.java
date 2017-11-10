@@ -1,6 +1,7 @@
 package com.giftsearcher.giftsearcherclient;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,47 +16,74 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.giftsearcher.giftsearcherclient.DbHelper.GiftDbHelper;
 import com.giftsearcher.giftsearcherclient.entity.Gift;
+import com.giftsearcher.giftsearcherclient.util.GlobalUrls;
 import com.giftsearcher.giftsearcherclient.util.ImageUtil;
 import com.giftsearcher.giftsearcherclient.util.JSONUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdvancedSearchActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private ListView giftsListView;
     private GiftListAdapter giftsAdapter;
+    private EditText etPriceFrom, etPriceTo, etAgeFrom, etAgeTo;
+    private Spinner spinnerHoliday, spinnerHobby, spinnerGender;
+    private Button btnSearchGift;
+    private String holiday, hobby, gender;
+
+    private final String[] holidays = { "День рождения", "Новый год", "23 февраля",
+            "8 марта", "День всех влюбленных", "Другие" };
+
+    private final String[] hobbies = { "Спорт", "Фильмы", "Автомобили", "Мода", "Музыка", "Путешествия",
+            "Книги", "Исскуство", "Настольные игры", "Компьютерные игры", "Программирование",
+            "Реклама", "Дизайн", "Бизнес", "Еда", "Рукоделие", "Коллекционирование", "Йога",
+            "Иностранные языки", "Тренинги", "Охота и рыбалка", "Другие" };
+
+    private final String[] genders = { "Мужчина", "Женщина", "Ребенок", "Унисекс" };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wish_gifts);
+        setContentView(R.layout.activity_advanced_search);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_advansed_search);
         setToolbar(toolbar);
 
-        giftsListView = (ListView) findViewById(R.id.wishGiftsListView);
-        giftsAdapter = new GiftListAdapter(AdvancedSearchActivity.this, R.layout.gift_list_item, );
+        giftsListView = (ListView) findViewById(R.id.searchGiftsListView);
+        giftsAdapter = new GiftListAdapter(AdvancedSearchActivity.this, R.layout.gift_list_item, new ArrayList<Gift>());
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_wish_gifts, menu);
-        return true;
-    }
+        etPriceFrom = (EditText) findViewById(R.id.etPriceFrom);
+        etPriceTo = (EditText) findViewById(R.id.etPriceTo);
+        etAgeFrom = (EditText) findViewById(R.id.etAgeFrom);
+        etAgeTo = (EditText) findViewById(R.id.etAgeTo);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
+        btnSearchGift = (Button) findViewById(R.id.btnSearchGift);
+        btnSearchGift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createParams();
+            }
+        });
+
+        spinnerHoliday = (Spinner) findViewById(R.id.spinnerHoliday);
+        spinnerHobby = (Spinner) findViewById(R.id.spinnerHobby);
+        spinnerGender = (Spinner) findViewById(R.id.spinnerGender);
+
+        setSpinnerAdapter(spinnerHoliday,"holiday", holidays);
+        setSpinnerAdapter(spinnerHobby, "hobby", hobbies);
+        setSpinnerAdapter(spinnerGender, "gender", genders);
     }
 
     private void setToolbar(Toolbar toolbar) {
@@ -71,13 +99,77 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
         });
     }
 
+    private void createParams() {
+        //todo: Обработать age значения, т.к. они byte
+        String priceFrom = etPriceFrom.getText().toString();
+        String priceTo = etPriceTo.getText().toString();
+        String ageFrom = etAgeFrom.getText().toString();
+        String ageTo = etAgeTo.getText().toString();
+        String url = GlobalUrls.URL_ADVANCED_SEARCH;
+
+        new AdvancedSearchPostTask().execute(url, priceFrom, priceTo, ageFrom, ageTo, gender, hobby, holiday);
+    }
+
+    private void setSpinnerAdapter(final Spinner spinner, final String component, String[] array) {
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, array);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (component) {
+                    case "holiday":
+                        holiday = holidays[position];
+                        break;
+                    case "hobby":
+                        hobby = hobbies[position];
+                        break;
+                    case "gender":
+                        String[] usGender = {"MEN", "WOMEN", "CHILD", "UNISEX"};
+                        gender = usGender[position];
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_advanced_search, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_wish_gifts) {
+            Intent intent = new Intent(this, WishGiftsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Gift gift = giftsAdapter.getItem(position);
+        if (gift == null) {
+            return;
+        }
 
+        Intent intent = new Intent(this, GiftDetailActivity.class);
+        intent.putExtra("id", gift.getId());
+        startActivity(intent);
     }
 
     //Обработка запросов в фоновом потоке
-    private class JSONTask extends AsyncTask<String, Void, List<Gift>> {
+    private class AdvancedSearchPostTask extends AsyncTask<String, Void, List<Gift>> {
 
         @Override
         protected void onPreExecute() {
@@ -87,7 +179,7 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
         @Override
         protected List<Gift> doInBackground(String... params) {
             try {
-                return JSONUtil.getGiftListFromJSON(params[0]);
+                return JSONUtil.getGiftsFromAdvancedSearch(params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -104,8 +196,10 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
         }
     }
 
+    // TODO: Вынести в отдельный класс и переиспользовать
     //Адаптер для вывода СПИСКА ПОДАРКОВ!
     private class GiftListAdapter extends ArrayAdapter<Gift> {
+
 
         private List<Gift> gifts;
         private int resource;
@@ -150,5 +244,4 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
             return convertView;
         }
     }
-
 }

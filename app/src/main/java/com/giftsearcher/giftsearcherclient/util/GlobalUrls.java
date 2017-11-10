@@ -16,4 +16,7 @@ public class GlobalUrls {
 
     //YandexMapActivity
     public static final String URL_SHOP = URL_SERVER + "/api/shop/";
+
+    //AdvancedSearchActivity
+    public static final String URL_ADVANCED_SEARCH = URL_SERVER + "/api/gifts/advancedSearch";
 }

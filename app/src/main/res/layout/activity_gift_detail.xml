@@ -8,31 +8,31 @@ android:layout_height="match_parent"
 android:background="@color/colorBackgroudApp"
 tools:context="com.giftsearcher.giftsearcherclient.GiftDetailActivity">
 
-<android.support.design.widget.AppBarLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/AppTheme.AppBarOverlay">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_detail"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:elevation="0dp"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <ImageView
-            android:id="@+id/imageLogo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_detail"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="0dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-    </android.support.v7.widget.Toolbar>
+            <ImageView
+                android:id="@+id/imageLogo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/ic_launcher" />
 
-</android.support.design.widget.AppBarLayout>
+        </android.support.v7.widget.Toolbar>
 
-<include
-    android:id="@+id/include"
-    layout="@layout/content_activity_gift_detail" />
+    </android.support.design.widget.AppBarLayout>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_activity_gift_detail" />
 
 </android.support.design.widget.CoordinatorLayout>
