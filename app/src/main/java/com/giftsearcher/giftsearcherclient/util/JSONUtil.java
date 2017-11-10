@@ -171,19 +171,15 @@ public class JSONUtil {
             os.write(data);
             connection.connect();
 
-            int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                inputStream  = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-                StringBuilder stringBuilder = new StringBuilder();
+            inputStream  = connection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder stringBuilder = new StringBuilder();
 
-                String line = "";
-                while ((line = reader.readLine()) != null) {
-                    stringBuilder.append(line);
-                }
-                return JSON.parseArray(stringBuilder.toString(), Gift.class);
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
             }
-            return null;
+            return JSON.parseArray(stringBuilder.toString(), Gift.class);
         } finally {
             if (connection != null) {
                 connection.disconnect();

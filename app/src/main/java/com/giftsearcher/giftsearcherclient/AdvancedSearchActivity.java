@@ -7,7 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawableWrapper;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,6 +42,8 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
     private Spinner spinnerHoliday, spinnerHobby, spinnerGender;
     private Button btnSearchGift;
     private String holiday, hobby, gender;
+    private TextView tvNoSearch;
+    private ConstraintLayout clAdvancedSearch;
 
     private final String[] holidays = { "День рождения", "Новый год", "23 февраля",
             "8 марта", "День всех влюбленных", "Другие" };
@@ -189,6 +193,9 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
         @Override
         protected void onPostExecute(List<Gift> result) {
             super.onPostExecute(result);
+            if (giftsAdapter.getCount() > 0) {
+                giftsAdapter.clear();
+            }
             if (result != null) {
                 giftsAdapter.addAll(result);
                 giftsAdapter.notifyDataSetChanged();
