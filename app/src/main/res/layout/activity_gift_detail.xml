@@ -25,7 +25,7 @@ tools:context="com.giftsearcher.giftsearcherclient.GiftDetailActivity">
                 android:id="@+id/imageLogo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/logo" />
 
         </android.support.v7.widget.Toolbar>
 
