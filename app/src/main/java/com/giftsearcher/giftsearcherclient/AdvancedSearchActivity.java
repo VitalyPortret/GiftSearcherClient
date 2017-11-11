@@ -42,8 +42,6 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
     private Spinner spinnerHoliday, spinnerHobby, spinnerGender;
     private Button btnSearchGift;
     private String holiday, hobby, gender;
-    private TextView tvNoSearch;
-    private ConstraintLayout clAdvancedSearch;
 
     private final String[] holidays = { "День рождения", "Новый год", "23 февраля",
             "8 марта", "День всех влюбленных", "Другие" };
@@ -104,7 +102,6 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
     }
 
     private void createParams() {
-        //todo: Обработать age значения, т.к. они byte
         String priceFrom = etPriceFrom.getText().toString();
         String priceTo = etPriceTo.getText().toString();
         String ageFrom = etAgeFrom.getText().toString();
@@ -203,7 +200,6 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
         }
     }
 
-    // TODO: Вынести в отдельный класс и переиспользовать
     //Адаптер для вывода СПИСКА ПОДАРКОВ!
     private class GiftListAdapter extends ArrayAdapter<Gift> {
 

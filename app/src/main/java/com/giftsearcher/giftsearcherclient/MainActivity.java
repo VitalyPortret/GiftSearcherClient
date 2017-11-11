@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         giftsListView.setOnItemClickListener(this);
 
         giftsListView.setOnScrollListener(new LessScrollListener<Gift>(giftsListView, giftsAdapter, 33) {
-            //todo:Исправить захардкоженый параметр - 33
             @Override
             public void onLoadMore(int page) {
                 new JSONTask().execute(currentUrl + "?page=" + page);
@@ -168,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 return JSONUtil.getGiftListFromJSON(params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
-                //todo: Добавить картинку что нет инета
             }
             return null;
         }
@@ -230,7 +228,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Bitmap bitmap = ImageUtil.createBitmapFromByteArray(gift.getImage());
                 ivGiftList.setImageBitmap(bitmap);
             }
-
             return convertView;
         }
     }
