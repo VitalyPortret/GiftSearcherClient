@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void setSpinnerAdapter(Spinner spinner) {
         //Категории
         final String[] spinnerItems = {
-                "Наилучший рейтинг",
                 "Хиты продаж",
                 "Новинки",
                 "Цена по возрастанию",
@@ -90,18 +89,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        currentUrl = GlobalUrls.URL_BEST_RATING_GIFTS;
-                        break;
-                    case 1:
                         currentUrl = GlobalUrls.URL_POPULAR_GIFTS;
                         break;
-                    case 2:
+                    case 1:
                         currentUrl = GlobalUrls.URL_NEW_GIFTS;
                         break;
-                    case 3:
+                    case 2:
                         currentUrl = GlobalUrls.URL_CHEAP_GIFTS;
                         break;
-                    case 4:
+                    case 3:
                         currentUrl = GlobalUrls.URL_EXPENSIVE_GIFTS;
                         break;
                 }

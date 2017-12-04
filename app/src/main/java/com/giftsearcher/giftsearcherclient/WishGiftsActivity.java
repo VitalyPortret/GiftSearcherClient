@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
         giftDbHelper = new GiftDbHelper(this);
 
         giftsListView = (ListView) findViewById(R.id.wishGiftsListView);
-        giftsAdapter = new GiftListAdapter(WishGiftsActivity.this, R.layout.gift_list_item, giftDbHelper.getGifts());
+        giftsAdapter = new GiftListAdapter(WishGiftsActivity.this, R.layout.gift_list_item_with_delete, giftDbHelper.getGifts());
         giftsListView.setAdapter(giftsAdapter);
         giftsListView.setOnItemClickListener(this);
     }
@@ -115,15 +116,25 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
                 convertView = inflater.inflate(resource, null);
             }
 
+            ImageButton btnDelete;
             ImageView ivGiftList;
             TextView tvGiftName, tvGiftPrice, tvGiftAppreciated;
 
+            btnDelete = convertView.findViewById(R.id.btnDelete);
             ivGiftList = convertView.findViewById(R.id.ivGiftList);
             tvGiftName = convertView.findViewById(R.id.tvGiftName);
             tvGiftPrice = convertView.findViewById(R.id.tvGiftPrice);
             tvGiftAppreciated = convertView.findViewById(R.id.tvGiftAppreciated);
 
-            Gift gift = gifts.get(position);
+            final Gift gift = gifts.get(position);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    giftDbHelper.deleteGift(gift.getId());
+                    giftsAdapter.clear();
+                    giftsAdapter.addAll(giftDbHelper.getGifts());
+                }
+            });
             tvGiftName.setText(gift.getNameGift());
             tvGiftPrice.setText(String.format("%s", gift.getPrice() + " ₽"));
             tvGiftAppreciated.setText(String.format("%s", gift.getAppreciated()));
@@ -136,5 +147,4 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
             return convertView;
         }
     }
-
 }

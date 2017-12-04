@@ -95,9 +95,14 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
 
             case R.id.action_favorite:
                 if (gift != null) {
-                    giftDbHelper.addGift(gift);
+                    long result = giftDbHelper.addGift(gift);
+//                    new JSONTask().execute(GlobalUrls.URL_LIKE_GIFT + gift.getId());
+                    if (result > 0) {
+                        Toast.makeText(this,"Добавлено в понравившиеся", Toast.LENGTH_SHORT).show();
+                    } else if (result == -2) {
+                        Toast.makeText(this,"Подарок уже в понравившиеся", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                Toast.makeText(this,"Добавлено в понравившиеся", Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -149,7 +154,6 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
         @Override
         protected void onPostExecute(Gift outputGift) {
             super.onPostExecute(outputGift);
-
             if (outputGift == null) {
                 return;
             }

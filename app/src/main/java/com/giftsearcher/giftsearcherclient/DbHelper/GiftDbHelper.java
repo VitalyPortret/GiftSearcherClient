@@ -60,6 +60,12 @@ public class GiftDbHelper extends SQLiteOpenHelper  {
     }
 
     public long addGift(Gift gift) {
+        List<Gift> gifts = getGifts();
+        for (Gift g : gifts ) {
+           if (g.getId() == gift.getId()) {
+               return -2;
+           }
+        }
         db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
