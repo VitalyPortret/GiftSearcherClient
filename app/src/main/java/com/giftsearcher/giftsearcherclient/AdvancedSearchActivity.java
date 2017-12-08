@@ -148,9 +148,13 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
+        Intent intent;
         if (id == R.id.action_wish_gifts) {
-            Intent intent = new Intent(this, WishGiftsActivity.class);
+            intent = new Intent(this, WishGiftsActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_add_gift) {
+            intent = new Intent(this, CreateGiftActivity.class);
             startActivity(intent);
             return true;
         }

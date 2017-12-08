@@ -9,4 +9,11 @@
         android:title="@string/action_advanced_search"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_add_gift"
+        android:icon="@drawable/ic_add"
+        android:title="Добавить подарок"
+        app:showAsAction="ifRoom"/>
+
+
 </menu>

@@ -57,9 +57,13 @@ public class WishGiftsActivity extends AppCompatActivity implements AdapterView.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
+        Intent intent;
         if (id == R.id.action_advanced_search) {
-            Intent intent = new Intent(this, AdvancedSearchActivity.class);
+            intent = new Intent(this, AdvancedSearchActivity.class);
+            startActivity(intent);
+            return true;
+        } else if (id == R.id.action_add_gift) {
+            intent = new Intent(this, CreateGiftActivity.class);
             startActivity(intent);
             return true;
         }
