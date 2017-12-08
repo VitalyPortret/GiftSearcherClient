@@ -132,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 intent = new Intent(this, AdvancedSearchActivity.class);
                 startActivity(intent);
                 return true;
+
+            case R.id.action_add_gift:
+                intent = new Intent(this, CreateGiftActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -151,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //Обработка запросов в фоновом потоке
     private class JSONTask extends AsyncTask<String, Void, List<Gift>> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

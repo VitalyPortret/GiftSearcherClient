@@ -4,6 +4,12 @@
     tools:context="com.giftsearcher.giftsearcherclient.MainActivity">
 
     <item
+        android:id="@+id/action_add_gift"
+        android:icon="@drawable/ic_add"
+        android:title="Добавить подарок"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_advanced_search"
         android:icon="@drawable/ic_search"
         android:title="@string/action_advanced_search"

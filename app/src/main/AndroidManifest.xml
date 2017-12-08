@@ -28,6 +28,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".CreateGiftActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".YandexMapActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">

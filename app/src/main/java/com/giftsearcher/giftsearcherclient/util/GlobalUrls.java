@@ -20,4 +20,7 @@ public class GlobalUrls {
 
     //AdvancedSearchActivity
     public static final String URL_ADVANCED_SEARCH = URL_SERVER + "/api/gifts/advancedSearch";
+
+    //CreateGiftActivity
+    public static final String URL_CREATE_GIFT = URL_SERVER + "/api/gifts/create";
 }
