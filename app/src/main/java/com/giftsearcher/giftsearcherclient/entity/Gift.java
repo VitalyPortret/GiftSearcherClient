@@ -8,6 +8,10 @@ public class Gift {
 
     private String description;
 
+    private Byte recommendedAge;
+
+    private String gender;
+
     private byte[] image;
 
     private double price;
@@ -30,6 +34,14 @@ public class Gift {
 
     public void setNameGift(String nameGift) {
         this.nameGift = nameGift;
+    }
+
+    public Byte getRecommendedAge() {
+        return recommendedAge;
+    }
+
+    public void setRecommendedAge(Byte recommendedAge) {
+        this.recommendedAge = recommendedAge;
     }
 
     public String getDescription() {
@@ -71,6 +83,15 @@ public class Gift {
     public void setShop(Shop shop) {
         this.shop = shop;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
 
     public Gift() {}
 

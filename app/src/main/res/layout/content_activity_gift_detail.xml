@@ -141,6 +141,7 @@
 
                 <Button
                     android:id="@+id/buttonOnMap"
+                    style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="130dp"
                     android:layout_height="37dp"
                     android:text="На карте" />

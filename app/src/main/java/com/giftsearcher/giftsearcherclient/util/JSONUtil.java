@@ -198,10 +198,12 @@ public class JSONUtil {
         }
     }
 
-    public static Integer postGift(Gift... gifts) throws IOException {
+    public static Gift postGift(Gift... gifts) throws IOException {
         HttpURLConnection connection = null;
         OutputStream outputStream = null;
         BufferedOutputStream bos = null;
+        InputStream inputStream = null;
+        BufferedReader reader = null;
         URL url;
 
         try {
@@ -212,6 +214,7 @@ public class JSONUtil {
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
             connection.setDoOutput(true);
+            connection.setDoInput(true);
 
             String taskJsonString = JSON.toJSONString(gifts[0]);
             outputStream = connection.getOutputStream();
@@ -222,7 +225,15 @@ public class JSONUtil {
             connection.connect();
             bos.flush();
 
-            return connection.getResponseCode();
+            inputStream  = connection.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder stringBuilder = new StringBuilder();
+
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            return JSON.parseObject(stringBuilder.toString(), Gift.class);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -233,6 +244,12 @@ public class JSONUtil {
                 }
                 if (bos != null) {
                     bos.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (reader != null) {
+                    reader.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
