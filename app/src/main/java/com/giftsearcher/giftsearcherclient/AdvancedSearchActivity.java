@@ -153,10 +153,6 @@ public class AdvancedSearchActivity extends AppCompatActivity implements Adapter
             intent = new Intent(this, WishGiftsActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.action_add_gift) {
-            intent = new Intent(this, CreateGiftActivity.class);
-            startActivity(intent);
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
