@@ -118,10 +118,12 @@ public class GiftDetailActivity extends AppCompatActivity implements View.OnClic
         }
         tvGiftAppreciated.setText(String.format("%d", gift.getAppreciated()));
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = true;
-        Bitmap bmp = BitmapFactory.decodeByteArray(gift.getImage(), 0, gift.getImage().length, options);
-        imageGiftDetail.setImageBitmap(bmp);
+        if (gift.getImage() != null) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            Bitmap bmp = BitmapFactory.decodeByteArray(gift.getImage(), 0, gift.getImage().length, options);
+            imageGiftDetail.setImageBitmap(bmp);
+        }
     }
 
     @Override

@@ -15,5 +15,4 @@
         android:title="@string/action_advanced_search"
         app:showAsAction="ifRoom"/>
 
-
 </menu>

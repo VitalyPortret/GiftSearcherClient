@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 /**
@@ -174,14 +175,22 @@ public class CreateGiftActivity extends AppCompatActivity  {
         new PostTask().execute(newGift);
     }
 
-    private class PostTask extends AsyncTask<Gift, Void, Gift> {
+    private void showResult(int httpResult) {
+        if(httpResult == HttpURLConnection.HTTP_OK) {
+            showToast("Подарок сохранен успешно");
+        } else {
+            showToast("Подарок не сохранен, произошла ошибка");
+        }
+    }
+
+    private class PostTask extends AsyncTask<Gift, Void, Integer> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected Gift doInBackground(Gift... gifts) {
+        protected Integer doInBackground(Gift... gifts) {
             try {
                 return JSONUtil.postGift(gifts);
             } catch (IOException e) {
@@ -191,9 +200,9 @@ public class CreateGiftActivity extends AppCompatActivity  {
         }
 
         @Override
-        protected void onPostExecute(Gift gift) {
-            super.onPostExecute(gift);
-
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            showResult(result);
         }
     }
 }
